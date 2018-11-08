@@ -16,6 +16,17 @@ public class RegistrarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar);
+
+        Nombre = findViewById(R.id.ETNombre);
+        Apellidos = findViewById(R.id.ETApellidos);
+        Correo = findViewById(R.id.ETCorreo);
+        Telefono = findViewById(R.id.ETTelefono);
+        Usuario = findViewById(R.id.ETUsuario);
+        Password = findViewById(R.id.ETPass);
+        Pregunta1 = findViewById(R.id.spinnerPregunta1);
+        Respuesta1 = findViewById(R.id.ETRespuesta1);
+        Pregunta2 = findViewById(R.id.spinnerPregunta2);
+        Respuesta2 = findViewById(R.id.ETRespuesta2);
     }
 
     public void Registrar(View view){

@@ -1,0 +1,91 @@
+package com.developers.xsquad.youngadvisors;
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+
+public class MainActivity extends AppCompatActivity {
+
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
+
+    EditText Correo, Pass;
+    public static final String USER = "usuario";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Correo = findViewById(R.id.ETUsuario);
+        Pass = findViewById(R.id.ETPass);
+        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(this);
+        checkCurrentUser();
+    }
+
+    public void loguearUsuario(View view) {
+        final String email = Correo.getText().toString().trim();
+        String password = Pass.getText().toString().trim();
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Se debe ingresar un email", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Falta ingresar la contraseña", Toast.LENGTH_LONG).show();
+            return;
+        }
+        progressDialog.setMessage("Realizando consulta en linea...");
+        progressDialog.show();
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            int pos = email.indexOf("@");
+                            String user = email.substring(0, pos);
+                            Toast.makeText(MainActivity.this, "Bienvenido: " + Correo.getText(), Toast.LENGTH_LONG).show();
+                            Intent intencion = new Intent(getApplication(), InicioActivity.class);
+                            intencion.putExtra(USER, user);
+                            startActivity(intencion);
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {//si se presenta una colisión
+                                Toast.makeText(MainActivity.this, "Ese usuario ya existe ", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "No se pudo registrar el usuario ", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        progressDialog.dismiss();
+                    }
+                });
+    }
+
+    public void Registrar(View view) {
+        Intent intent = new Intent(this, RegistrarActivity.class);
+        startActivity(intent);
+    }
+
+    public void ResetPass(View view){
+
+    }
+
+    public void checkCurrentUser() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Intent intencion = new Intent(getApplication(), InicioActivity.class);
+            intencion.putExtra(USER, user);
+            startActivity(intencion);
+        }
+    }
+}
