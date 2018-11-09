@@ -1,8 +1,11 @@
 package com.developers.xsquad.youngadvisors;
 
+import android.graphics.Picture;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,14 +15,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.developers.xsquad.youngadvisors.Fragments.IFragments;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class InicioActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, IFragments {
 
+    String name, email;
+    Uri photoUrl;
+    boolean emailVerified;
+    String uid;
+    FirebaseUser user;
+
+    TextView Nombre, Correo;
+    ImageView Foto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
+
+        getUserProfile();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -39,7 +59,17 @@ public class InicioActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView = navigationView.getHeaderView(0);
+        Nombre = hView.findViewById(R.id.NavNombre);
+        Correo = (TextView) hView.findViewById(R.id.NavCorreo);
+        Foto = hView.findViewById(R.id.NavFoto);
+        Bundle bundle = getIntent().getExtras();
+        int indentificar = bundle.getInt("identificador");
         navigationView.setNavigationItemSelectedListener(this);
+
+        Nombre.setText(name);
+        Correo.setText(email);
+        Foto.setImageURI(photoUrl);
     }
 
     @Override
@@ -92,10 +122,28 @@ public class InicioActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
+        } else if(id == R.id.NavPerfil){
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void getUserProfile() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            name = user.getDisplayName();
+            email = user.getEmail();
+            photoUrl = user.getPhotoUrl();
+            emailVerified = user.isEmailVerified();
+            uid = user.getUid();
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
