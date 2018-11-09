@@ -21,7 +21,8 @@
             android:label="@string/title_activity_inicio"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RegistrarActivity" />
-        <activity android:name=".PerfilRegistroActivity"></activity>
+        <activity android:name=".PerfilRegistroActivity" />
+        <activity android:name=".RegistrarEPActivity"></activity>
     </application>
 
 </manifest>

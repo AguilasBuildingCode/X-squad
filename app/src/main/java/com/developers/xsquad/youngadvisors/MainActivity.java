@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Registrar(View view) {
-        Intent intent = new Intent(this, RegistrarActivity.class);
+        Intent intent = new Intent(this, RegistrarEPActivity.class);
         startActivity(intent);
     }
 

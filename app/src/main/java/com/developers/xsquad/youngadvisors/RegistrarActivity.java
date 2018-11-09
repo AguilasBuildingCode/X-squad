@@ -1,17 +1,27 @@
 package com.developers.xsquad.youngadvisors;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.developers.xsquad.youngadvisors.Utilities.Users;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RegistrarActivity extends AppCompatActivity {
 
-    EditText Nombre, Apellidos, Correo, Telefono, Usuario, Password, Respuesta1, Respuesta2;
-    Spinner Pregunta1, Pregunta2;
-
+    String UserId;
+    EditText Nombre, Apellidos, Telefono;
+    TextView tvMensaje;
+    FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,18 +29,29 @@ public class RegistrarActivity extends AppCompatActivity {
 
         Nombre = findViewById(R.id.ETNombre);
         Apellidos = findViewById(R.id.ETApellidos);
-        Correo = findViewById(R.id.ETCorreo);
         Telefono = findViewById(R.id.ETTelefono);
-        Usuario = findViewById(R.id.ETUsuario);
-        Password = findViewById(R.id.ETPass);
-        Pregunta1 = findViewById(R.id.spinnerPregunta1);
-        Respuesta1 = findViewById(R.id.ETRespuesta1);
-        Pregunta2 = findViewById(R.id.spinnerPregunta2);
-        Respuesta2 = findViewById(R.id.ETRespuesta2);
+        tvMensaje = findViewById(R.id.TVMensaje);
+        user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public void Registrar(View view){
-        Intent intent = new Intent(this, PerfilRegistroActivity.class);
-        startActivity(intent);
+
+        try{
+            UserId = user.getUid();
+            Users user = new Users(Nombre.getText().toString(), Apellidos.getText().toString(), Telefono.getText().toString());
+            DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
+            mDatabase.child("proyecto/db/usuarios").child(UserId).setValue(user);
+            tvMensaje.setText("");
+            Nombre.setText("");
+            Apellidos.setText("");
+            Telefono.setText("");
+            Toast.makeText(this, "Nodo insertado con exito", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception x){
+            Toast.makeText(this, "Hubo problema en la inserción \n" + x.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        //Intent intent = new Intent(this, PerfilRegistroActivity.class);
+        //startActivity(intent);
     }
 }

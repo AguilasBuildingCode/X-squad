@@ -17,13 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.developers.xsquad.youngadvisors.Fragments.IFragments;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class InicioActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, IFragments {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     String name, email;
     Uri photoUrl;
@@ -140,10 +138,5 @@ public class InicioActivity extends AppCompatActivity
             emailVerified = user.isEmailVerified();
             uid = user.getUid();
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }
