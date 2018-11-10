@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegistrarEPActivity extends AppCompatActivity {
 
@@ -34,17 +35,22 @@ public class RegistrarEPActivity extends AppCompatActivity {
         progressDialog.setMessage("Realizando consulta en linea...");
         progressDialog.show();
         if (TextUtils.isEmpty(correo.getText())) {
+            progressDialog.dismiss();
             Toast.makeText(this, "Se debe ingresar un email", Toast.LENGTH_LONG).show();
             return;
         }
         if (TextUtils.isEmpty(password.getText())) {
+            progressDialog.dismiss();
             Toast.makeText(this, "Falta ingresar la contraseña", Toast.LENGTH_LONG).show();
             return;
         }
+        // ESTO ESTA LISTO
         firebaseAuth.createUserWithEmailAndPassword(correo.getText().toString().trim(), password.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    firebaseUser.sendEmailVerification();
                     Intent intent = new Intent(RegistrarEPActivity.this, RegistrarActivity.class);
                     startActivity(intent);
                 }else {

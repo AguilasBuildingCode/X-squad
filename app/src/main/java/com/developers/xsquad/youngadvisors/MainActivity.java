@@ -46,19 +46,27 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Falta ingresar la contraseña", Toast.LENGTH_LONG).show();
             return;
         }
-        progressDialog.setMessage("Realizando consulta en linea...");
+        progressDialog.setMessage("Ingresando...");
         progressDialog.show();
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            int pos = email.indexOf("@");
-                            String user = email.substring(0, pos);
-                            Toast.makeText(MainActivity.this, "Bienvenido: " + Correo.getText(), Toast.LENGTH_LONG).show();
-                            Intent intencion = new Intent(getApplication(), InicioActivity.class);
-                            intencion.putExtra(USER, user);
-                            startActivity(intencion);
+                            //int pos = email.indexOf("@");
+                            //String user = email.substring(0, pos);
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            if(user.isEmailVerified()) {
+                                Toast.makeText(MainActivity.this, "Bienvenido: " + Correo.getText(), Toast.LENGTH_LONG).show();
+                                Intent intencion = new Intent(getApplication(), InicioActivity.class);
+                                intencion.putExtra(USER, user);
+                                startActivity(intencion);
+                            }
+                            else {
+                                Toast.makeText(MainActivity.this, "Debe verificar su email...", Toast.LENGTH_LONG).show();
+                                firebaseAuth.getCurrentUser();
+                                firebaseAuth.signOut();
+                            }
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {//si se presenta una colisión
                                 Toast.makeText(MainActivity.this, "Ese usuario ya existe ", Toast.LENGTH_SHORT).show();

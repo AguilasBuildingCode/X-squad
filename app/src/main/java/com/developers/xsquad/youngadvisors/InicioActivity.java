@@ -25,7 +25,6 @@ public class InicioActivity extends AppCompatActivity
 
     String name, email;
     Uri photoUrl;
-    boolean emailVerified;
     String uid;
     FirebaseUser user;
 
@@ -135,7 +134,6 @@ public class InicioActivity extends AppCompatActivity
             name = user.getDisplayName();
             email = user.getEmail();
             photoUrl = user.getPhotoUrl();
-            emailVerified = user.isEmailVerified();
             uid = user.getUid();
         }
     }
