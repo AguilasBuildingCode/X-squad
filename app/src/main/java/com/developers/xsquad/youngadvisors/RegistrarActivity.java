@@ -65,6 +65,10 @@ public class RegistrarActivity extends AppCompatActivity {
     private File file;
     private ProgressDialog progressDialog;
 
+    FirebaseStorage storage;
+    StorageReference storageRef;
+    StorageReference mountainsRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,14 +83,24 @@ public class RegistrarActivity extends AppCompatActivity {
     }
 
     public void Registrar(View view){
-        progressDialog.setMessage("Ingresando...");
-        progressDialog.show();
+        Step1Registrar();
+    }
+
+    public void Step1Registrar(){
+        /*
+        *
+        *       CODIGO PARA SUBIR LA FOTO AL SERVIDOR EN EL APARTADO DE STRONGE, EN UNA CARPETA foto/
+        *
+        */
         try {
-            FirebaseStorage storage = FirebaseStorage.getInstance();
+            progressDialog.setMessage("Subiendo imagen...");
+            progressDialog.show();
+            // FirebaseStringe objet for get instance on it
+            storage = FirebaseStorage.getInstance();
             // Create a storage reference from our app
-            StorageReference storageRef = storage.getReference();
+            storageRef = storage.getReference();
             // Create a reference to "mountains.jpg"
-            StorageReference mountainsRef = storageRef.child("fotos/" + firebaseUser.getUid() + ".jpg");
+            mountainsRef = storageRef.child("fotos/" + firebaseUser.getUid() + ".jpg");
             // Create a reference to 'images/mountains.jpg'
             final StorageReference mountainImagesRef = storageRef.child("fotos/"+ firebaseUser.getUid() +".jpg");
             // While the file names are the same, the references point to different files
@@ -106,6 +120,7 @@ public class RegistrarActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle unsuccessful uploads
+                    progressDialog.dismiss();
                     Toast.makeText(RegistrarActivity.this, "Error al almacenar la foto" + exception.toString(), Toast.LENGTH_LONG).show();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -113,50 +128,94 @@ public class RegistrarActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                     // ...
+                    progressDialog.dismiss();
                     Toast.makeText(RegistrarActivity.this, "La foto fue almacenada", Toast.LENGTH_LONG).show();
-                    adduserpart2();
+                    /*
+                    *
+                    *       MANDAMOS LLAMAR EL SIGUIENTE PROCESO SÍ TODO SALE BIEN
+                    *
+                    */
+                    Step2Registrar();
                 }
             });
         }catch (Exception e)
         {
+            progressDialog.dismiss();
             Toast.makeText(RegistrarActivity.this, "No se pudo ingresar la foto" + e.toString(), Toast.LENGTH_LONG).show();
         }
-        progressDialog.dismiss();
     }
 
-    public void adduserpart2(){
+    public void Step2Registrar(){
+        /*
+        *
+        *       PROCESO PARA EXTRAER EL URL DE DESCARGA DE LA IMAGEN SUBIDA ANTERIORMENTE PARA ALMACENARLA EN EL PERFIL
+        *
+        * */
         try{
-            //ver url
-            /*
-            *
-            * ---------------------------------------- NO ENCUENTRA EL ARCHIVO Y NO PUEDE EXTRAER LA URL ------------------------------------
-            *
-            * */
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            StorageReference mountainsRef = storageRef.child("fotos/");
-            mountainsRef.child(firebaseUser.getUid() + ".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            progressDialog.setMessage("Espere...");
+            progressDialog.show();
+            //extraer url de la imagen almacenada
+            mountainsRef = storageRef.child("fotos/");
+            mountainsRef.child(firebaseUser.getUid() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    // Got the download URL for 'users/me/profile.png'
+                    // Got the download URL for the user
+                    progressDialog.dismiss();
                     downloadUri = uri;
-                    Toast.makeText(RegistrarActivity.this, "url consegido \n" + downloadUri, Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegistrarActivity.this, "url consegido", Toast.LENGTH_LONG).show();
+                    /*
+                    *
+                    *       SI EL PROCESO SALE BIEN PASA AL SIGUIENTE PROCESO
+                    *
+                    * */
+                    Step3Registrar();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle any errors
-                    Toast.makeText(RegistrarActivity.this, "url no encontrado \n" + exception, Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
+                    Toast.makeText(RegistrarActivity.this, "url no encontrado" + exception.toString(), Toast.LENGTH_LONG).show();
                 }
             });
+        }catch (Exception e){
+            Toast.makeText(RegistrarActivity.this, "Error al conseguir el url" + e.toString(), Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+        }
+    }
+
+    public void Step3Registrar(){
+        /*
+        *
+        *          INGRESANDO LOS DATOS A LA BASE DE DATOS
+        *
+        * */
+        try{
+            progressDialog.setMessage("Ingresando sus datos...");
+            progressDialog.show();
             //Para ingresar los datos a la db
             UserId = firebaseUser.getUid();
             Users user = new Users(Nombre.getText().toString(), Apellidos.getText().toString(), Telefono.getText().toString());
             DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
             mDatabase.child("proyecto/db/usuarios").child(UserId).setValue(user);
-            //UFoto.setImageResource(getResources((R.drawable.usuario)));
+            progressDialog.dismiss();
             Toast.makeText(this, "Nodo insertado con exito", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            progressDialog.dismiss();
+        }
+        //      SIGUIENTE PROCESO
+        Step4Registrar();
+    }
 
+    public void Step4Registrar(){
+        /*
+         *
+         *      ACTUALIZANDO LOS DATOS DEL PERFIL DE AUTHENTICATION DE FIREBASE
+         *
+         * */
+        try {
+            progressDialog.setMessage("Actualizando perfil de usuario...");
+            progressDialog.show();
             //Para ingresar los datos de usuario creado
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                     .setDisplayName(Nombre.getText().toString().trim() + " " + Apellidos.getText().toString().trim())
@@ -168,18 +227,30 @@ public class RegistrarActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 //Todo salio bien
+                                progressDialog.dismiss();
                                 Toast.makeText(RegistrarActivity.this, "Perfil actualizado", Toast.LENGTH_LONG).show();
+                                Step5Registrar();
+                            }else {
+                                progressDialog.dismiss();
+                                Toast.makeText(RegistrarActivity.this, "No se puede actualizar perfil", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
+        }catch (Exception e){
+            Toast.makeText(RegistrarActivity.this, "Error al actualizar perfil", Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+        }
+    }
 
-            Nombre.setText("");
-            Apellidos.setText("");
-            Telefono.setText("");
-        }
-        catch (Exception x){
-            Toast.makeText(RegistrarActivity.this, "Hubo problema en la inserción \n" + x.toString(), Toast.LENGTH_SHORT).show();
-        }
+    public void Step5Registrar(){
+        /*
+        *
+        *       SE LIMPIA EL FORMULARIO
+        *
+        * */
+        Nombre.setText("");
+        Apellidos.setText("");
+        Telefono.setText("");
     }
 
     public void subirFoto(View view){

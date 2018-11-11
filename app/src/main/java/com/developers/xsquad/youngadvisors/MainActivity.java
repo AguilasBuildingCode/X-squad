@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            //int pos = email.indexOf("@");
-                            //String user = email.substring(0, pos);
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if(user.isEmailVerified()) {
                                 Toast.makeText(MainActivity.this, "Bienvenido: " + Correo.getText(), Toast.LENGTH_LONG).show();
