@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkCurrentUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
+        if (user != null && user.isEmailVerified()) {
             Intent intencion = new Intent(getApplication(), InicioActivity.class);
             intencion.putExtra(USER, user);
             startActivity(intencion);

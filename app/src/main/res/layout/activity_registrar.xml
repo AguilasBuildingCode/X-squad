@@ -167,14 +167,72 @@
                     android:layout_height="50dp"
                     android:layout_weight="3"
                     android:animateLayoutChanges="true"
-                    android:background="@color/common_google_signin_btn_text_light_default"
-                    android:dropDownWidth="match_parent" />
+                    android:background="@color/common_google_signin_btn_text_dark_default"
+                    android:dropDownWidth="match_parent"/>
 
                 <Space
                     android:layout_width="55dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
 
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Spinner
+                    android:id="@+id/spinner_carrera"
+                    android:layout_width="223dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:visibility="visible" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:id="@+id/ETCotizacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Cotizacion"
+                    android:inputType="numberDecimal"
+                    android:visibility="visible" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <Space
