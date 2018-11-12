@@ -449,14 +449,29 @@ public class RegistrarActivity extends AppCompatActivity {
         }
         switch (type_carriers.getSelectedItemPosition()){
             case 1:
-                Insert_Carreras obCarreras = new Insert_Carreras(varNombre, varApellido, varTelefono);
-                DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference();
-                mDatabase1.child("proyecto/db/carrera/" + type_carriers.getSelectedItemPosition()).child(UserId).setValue(obCarreras);
+                FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
+                        + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
+                        new Insert_Carreras(varNombre, varApellido, varTelefono));
                 break;
             case 2:
-                Insert_Carreras obCarreras2 = new Insert_Carreras(varNombre, varApellido, varTelefono);
-                DatabaseReference mDatabase2 = FirebaseDatabase.getInstance().getReference();
-                mDatabase2.child("proyecto/db/carrera/" + type_carriers.getSelectedItemPosition()).child(UserId).setValue(obCarreras2);
+                FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
+                        + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
+                        new Insert_Carreras(varNombre, varApellido, varTelefono));
+                break;
+            case 3:
+                FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
+                        + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
+                        new Insert_Carreras(varNombre, varApellido, varTelefono));
+                break;
+            case 4:
+                FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
+                        + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
+                        new Insert_Carreras(varNombre, varApellido, varTelefono));
+                break;
+            case 5:
+                FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
+                        + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
+                        new Insert_Carreras(varNombre, varApellido, varTelefono));
                 break;
                 default:
                     break;

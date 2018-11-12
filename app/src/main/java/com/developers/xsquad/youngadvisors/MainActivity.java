@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Correo = findViewById(R.id.ETUsuario);
-        Pass = findViewById(R.id.ETPass);
+        Correo = (EditText) findViewById(R.id.ETUsuario);
+        Pass = (EditText) findViewById(R.id.ETPass);
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         checkCurrentUser();
