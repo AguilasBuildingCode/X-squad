@@ -3,11 +3,12 @@ package com.developers.xsquad.youngadvisors.Utilities;
 import android.graphics.Bitmap;
 
 public class Users {
-    private String Nombre, Apellidos, Telefono;
-    public Users(String Nombre, String Apellidos, String Telefono){
+    private String Nombre, Apellidos, Telefono, Tipo;
+    public Users(String Nombre, String Apellidos, String Telefono, String Tipo){
         this.Nombre = Nombre;
         this.Apellidos = Apellidos;
         this.Telefono = Telefono;
+        this.Tipo = Tipo;
     }
 
     public Users() {
@@ -38,4 +39,11 @@ public class Users {
         Telefono = telefono;
     }
 
+    public String getTipo() {
+        return Tipo;
+    }
+
+    public void setTipo(String tipo) {
+        Tipo = tipo;
+    }
 }

@@ -83,7 +83,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ResetPass(View view){
-
+        if (TextUtils.isEmpty(Correo.getText().toString().trim())) {
+            Toast.makeText(this, "Se debe ingresar un email", Toast.LENGTH_LONG).show();
+            return;
+        }
+        firebaseAuth.sendPasswordResetEmail(Correo.getText().toString().trim());
+        Toast.makeText(this, "Restaure su contraseña mediante el link del correo electronico enviado", Toast.LENGTH_LONG).show();
+        Pass.requestFocus();
     }
 
     public void checkCurrentUser() {

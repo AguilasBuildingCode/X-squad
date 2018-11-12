@@ -10,42 +10,46 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.developers.xsquad.youngadvisors.Utilities.Tipo_Usuarios;
 import com.developers.xsquad.youngadvisors.Utilities.Users;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnPausedListener;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static android.text.TextUtils.replace;
 
 public class RegistrarActivity extends AppCompatActivity {
 
@@ -54,6 +58,7 @@ public class RegistrarActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     Bitmap Foto;
     ImageView UFoto;
+    Spinner type_user;
 
     private static final int COD_SELECCIONADA = 10;
     private static final int COD_FOTO = 20;
@@ -62,12 +67,14 @@ public class RegistrarActivity extends AppCompatActivity {
     private static final String DIRECTORIO_IMAGEN = CARPETA_PRINCIPAL + CARPETA_IMAGEN;
     private String path;
     private Uri miPath, downloadUri;
-    private File file;
+    //private File file;
     private ProgressDialog progressDialog;
 
     FirebaseStorage storage;
     StorageReference storageRef;
     StorageReference mountainsRef;
+
+    ArrayList<String> tipos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +85,49 @@ public class RegistrarActivity extends AppCompatActivity {
         Apellidos = findViewById(R.id.ETApellidos);
         Telefono = findViewById(R.id.ETTelefono);
         UFoto = findViewById(R.id.IVRegistrarU);
+        type_user = findViewById(R.id.Tipos_spinner);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         progressDialog = new ProgressDialog(this);
+        tipos = new ArrayList<String>();
+        getTypesUsers();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(RegistrarActivity.this,
+                android.R.layout.simple_spinner_item, tipos);
+        type_user.setAdapter(adapter);
+        type_user.setSelection(0);
+    }
+
+    /*
+    *
+    *               AQUI ALGO ANDA MAL...........<<<>>>
+    *
+    * */
+    public void getTypesUsers() {
+        final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("proyecto/db/Type_User/").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tipos.clear();
+                for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    mDatabase.child("Type_User/").child(snapshot.getKey()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Tipo_Usuarios ob = new Tipo_Usuarios(snapshot.getValue().toString());
+                                tipos.add(ob.gettipo());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void Registrar(View view){
@@ -195,7 +243,7 @@ public class RegistrarActivity extends AppCompatActivity {
             progressDialog.show();
             //Para ingresar los datos a la db
             UserId = firebaseUser.getUid();
-            Users user = new Users(Nombre.getText().toString(), Apellidos.getText().toString(), Telefono.getText().toString());
+            Users user = new Users(Nombre.getText().toString(), Apellidos.getText().toString(), Telefono.getText().toString(), type_user.getSelectedItem().toString());
             DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
             mDatabase.child("proyecto/db/usuarios").child(UserId).setValue(user);
             progressDialog.dismiss();
@@ -248,9 +296,12 @@ public class RegistrarActivity extends AppCompatActivity {
         *       SE LIMPIA EL FORMULARIO
         *
         * */
+        UFoto.setImageResource(R.drawable.usuario);
         Nombre.setText("");
         Apellidos.setText("");
         Telefono.setText("");
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void subirFoto(View view){

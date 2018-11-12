@@ -1,11 +1,11 @@
 package com.developers.xsquad.youngadvisors;
 
-import android.graphics.Picture;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,8 +17,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import java.io.File;
 
 public class InicioActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,9 +34,16 @@ public class InicioActivity extends AppCompatActivity
     Uri photoUrl;
     String uid;
     FirebaseUser user;
+    FirebaseAuth firebaseAuth;
+    Intent intent;
 
     TextView Nombre, Correo;
     ImageView Foto;
+
+    FirebaseStorage storage;
+    StorageReference storageRef;
+    StorageReference mountainsRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +80,7 @@ public class InicioActivity extends AppCompatActivity
 
         Nombre.setText(name);
         Correo.setText(email);
-        Foto.setImageURI(photoUrl);
+        DescargarImagen();
     }
 
     @Override
@@ -117,8 +131,10 @@ public class InicioActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_singout) {
+            firebaseAuth.getInstance().signOut();
+            intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         } else if(id == R.id.NavPerfil){
 
         }
@@ -135,6 +151,29 @@ public class InicioActivity extends AppCompatActivity
             email = user.getEmail();
             photoUrl = user.getPhotoUrl();
             uid = user.getUid();
+        }
+    }
+
+    public void DescargarImagen() {
+        try {
+            storage = FirebaseStorage.getInstance();
+            storageRef = storage.getReference();
+            mountainsRef = storageRef.child("fotos/" + user.getUid() + ".jpg");
+            final File localFile = File.createTempFile(user.getUid(), "jpg");
+            mountainsRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Foto.setImageURI(Uri.parse(localFile.getPath()));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    Toast.makeText(InicioActivity.this, "Error al descargar foto de peril", Toast.LENGTH_LONG).show();
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(InicioActivity.this, "No pudimos descargar tu foto de perfil", Toast.LENGTH_LONG).show();
         }
     }
 }
