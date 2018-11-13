@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,7 +29,8 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 
 public class InicioActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        PerfilFragment.OnFragmentInteractionListener, ModificarPerfilFragment.OnFragmentInteractionListener{
 
     String name, email;
     Uri photoUrl;
@@ -119,26 +121,24 @@ public class InicioActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        Fragment miFragment = new Fragment();
+        boolean Seleccionado = false;
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
+        if (id == R.id.NavPerfil) {
+            miFragment = new PerfilFragment();
+            Seleccionado = true;
+        } else if (id == R.id.NavModPErfil) {
+            miFragment = new ModificarPerfilFragment();
+            Seleccionado = true;
         } else if (id == R.id.nav_singout) {
             firebaseAuth.getInstance().signOut();
             intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-        } else if(id == R.id.NavPerfil){
-
         }
-
+        if(Seleccionado) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, miFragment).commit();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -175,5 +175,10 @@ public class InicioActivity extends AppCompatActivity
         }catch (Exception e){
             Toast.makeText(InicioActivity.this, "No pudimos descargar tu foto de perfil", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
