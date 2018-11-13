@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                                 firebaseAuth.getCurrentUser();
                                 firebaseAuth.signOut();
                             }
-                        } else {
+                        }else{
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {//si se presenta una colisión
                                 Toast.makeText(MainActivity.this, "Ese usuario ya existe ", Toast.LENGTH_SHORT).show();
                             } else {

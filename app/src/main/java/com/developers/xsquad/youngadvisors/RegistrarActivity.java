@@ -22,7 +22,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.developers.xsquad.youngadvisors.Utilities.Alumnos;
 import com.developers.xsquad.youngadvisors.Utilities.Asesores;
 import com.developers.xsquad.youngadvisors.Utilities.Carreras;
@@ -292,7 +291,7 @@ public class RegistrarActivity extends AppCompatActivity {
             mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
 
             // Get the data from an ImageView as bytes
-            UFoto.setDrawingCacheEnabled(true);
+            UFoto.setDrawingCacheEnabled(true); //UFoto es ImagenView del layout
             UFoto.buildDrawingCache();
             Bitmap bitmap = ((BitmapDrawable) UFoto.getDrawable()).getBitmap();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
