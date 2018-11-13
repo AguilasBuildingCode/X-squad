@@ -5,7 +5,7 @@ android {
     defaultConfig {
         applicationId "com.developers.xsquad.youngadvisors"
         minSdkVersion 19
-        targetSdkVersion 19
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -34,5 +34,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-storage:16.0.2'
-    implementation "com.android.support:support-core-utils:24.2.0"
 }
