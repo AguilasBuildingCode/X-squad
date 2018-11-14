@@ -30,7 +30,9 @@ import java.io.File;
 
 public class InicioActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        PerfilFragment.OnFragmentInteractionListener, ModificarPerfilFragment.OnFragmentInteractionListener{
+        PerfilFragment.OnFragmentInteractionListener,
+        ModificarPerfilFragment.OnFragmentInteractionListener,
+        BusquedaFragment.OnFragmentInteractionListener{
 
     String name, email;
     Uri photoUrl;
@@ -83,6 +85,7 @@ public class InicioActivity extends AppCompatActivity
         Nombre.setText(name);
         Correo.setText(email);
         DescargarImagen();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new BusquedaFragment()).commit();
     }
 
     @Override
@@ -135,6 +138,9 @@ public class InicioActivity extends AppCompatActivity
             firebaseAuth.getInstance().signOut();
             intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+        } else if(id == R.id.NavBuscar){
+            miFragment = new BusquedaFragment();
+            Seleccionado = true;
         }
         if(Seleccionado) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment, miFragment).commit();
