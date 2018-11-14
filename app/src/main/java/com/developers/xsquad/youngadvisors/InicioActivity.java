@@ -47,7 +47,6 @@ public class InicioActivity extends AppCompatActivity
     FirebaseStorage storage;
     StorageReference storageRef;
     StorageReference mountainsRef;
-    File localFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +165,7 @@ public class InicioActivity extends AppCompatActivity
             storage = FirebaseStorage.getInstance();
             storageRef = storage.getReference();
             mountainsRef = storageRef.child("fotos/" + user.getUid() + ".jpg");
-            localFile = File.createTempFile(user.getUid(), "jpg");
+            final File localFile = File.createTempFile(user.getUid(), "jpg");
             mountainsRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
