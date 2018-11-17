@@ -51,6 +51,7 @@ public class PerfilFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         getUserProfile();
+
     }
 
     @Override
