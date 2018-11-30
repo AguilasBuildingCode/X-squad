@@ -284,7 +284,7 @@ public class RegistrarActivity extends AppCompatActivity {
             storageRef = storage.getReference();
             // Create a reference to "mountains.jpg"
             mountainsRef = storageRef.child("fotos/" + UserId + ".jpg");
-            // Create a reference to 'images/mountains.jpg'
+            // Create a reference to 'images/iduser.jpg'
             final StorageReference mountainImagesRef = storageRef.child("fotos/"+ UserId +".jpg");
             // While the file names are the same, the references point to different files
             mountainsRef.getName().equals(mountainImagesRef.getName());    // true

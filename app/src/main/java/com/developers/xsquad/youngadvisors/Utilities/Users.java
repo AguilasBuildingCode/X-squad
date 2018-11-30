@@ -1,7 +1,5 @@
 package com.developers.xsquad.youngadvisors.Utilities;
 
-import android.graphics.Bitmap;
-
 public class Users {
     private String Nombre, Apellidos, Telefono, Tipo;
     public Users(String Nombre, String Apellidos, String Telefono, String Tipo){
