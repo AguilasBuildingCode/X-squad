@@ -19,6 +19,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDatos> {
@@ -27,10 +28,10 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
     StorageReference storageRef;
     StorageReference mountainsRef;
 
-    List<UsersFinded> arratList;
+    List<Extend_UFinded> arratList;
     Context context;
 
-    public AdapterDatos(List<UsersFinded> arrayList, Context context){
+    public AdapterDatos(ArrayList<Extend_UFinded> arrayList, Context context){
         this.arratList = arrayList;
         this.context = context;
     }
@@ -58,7 +59,7 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
         {
             viewHolderDatos.Foto.setImageResource(R.drawable.usuario);
         }
-        int cal = Integer.parseInt(viewHolderDatos.Calificacion);
+        int cal = (int)(viewHolderDatos.Calificacion);
         switch (cal){
             case 1:
                 viewHolderDatos.Estrellas.setImageResource(R.drawable.estrella_1);
@@ -108,7 +109,8 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
 
     public class ViewHolderDatos extends RecyclerView.ViewHolder {
 
-        String Calificacion, Id;
+        String Id;
+        double Calificacion;
         TextView Nombre;
         ImageView Estrellas, Foto;
 

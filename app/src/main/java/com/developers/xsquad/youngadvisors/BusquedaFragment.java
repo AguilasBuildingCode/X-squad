@@ -3,6 +3,7 @@ package com.developers.xsquad.youngadvisors;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,11 +12,14 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterDatos;
+import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.Extend_UFinded;
+import com.developers.xsquad.youngadvisors.Utilities.Materias;
 import com.developers.xsquad.youngadvisors.Utilities.Tipo_Usuarios;
 import com.developers.xsquad.youngadvisors.Utilities.UsersFinded;
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +42,7 @@ public class BusquedaFragment extends Fragment {
     Spinner Tipo;
     ArrayList<String> tipos;
     ArrayList<UsersFinded> ListFindUsers;
-    ArrayList<UsersFinded> usersFindeds;
+    ArrayList<Extend_UFinded> usersFindeds;
     RecyclerView recyclerView;
 
     private OnFragmentInteractionListener mListener;
@@ -84,32 +88,40 @@ public class BusquedaFragment extends Fragment {
         usersFindeds = new ArrayList<>();
         ListFindUsers = new ArrayList<UsersFinded>();
         //llenarLista();
+
+        tipos = new ArrayList<String>();
+        getTypeUsers();
+        tipos.add("Usuario"); //RESUELVE EL ERROR DE EL SPINNER
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, tipos);
+        Tipo.setAdapter(adapter);
+        Tipo.setSelection(0);
+
         Buscar.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(event.getAction() == KeyEvent.KEYCODE_ENTER){
+                if(event.getAction() == KeyEvent.ACTION_DOWN){
                     /*
                     *
                     *       AQUI VA EL CODIGO DE EXTRACION DE USUARIOS DE FIREBASE <<<<<<<<<----------
                     *
                     */
                     final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
-                    mDatabase.child("proyecto/db/Type_User/").addListenerForSingleValueEvent(new ValueEventListener() {
+                    mDatabase.child("proyecto/db/lista/").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
                                 // EXTRAEMOS CODIGO DE USUARIO <<<<<<<<<<<
-                                AuxId = snapshot.getValue().toString();
-                                mDatabase.child("Type_User/").child(snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                mDatabase.child(snapshot.getKey() + "/materias").child(snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        // EXTRAEMOS LOS DATOS DE LOS USUARIOS <<<<<<<<<<
-                                        UsersFinded ob = snapshot.getValue(UsersFinded.class);
-                                        ob.setId(AuxId);
-                                        ListFindUsers.add(ob);
-                                        Toast.makeText(getContext(),AuxId, Toast.LENGTH_LONG).show();
-                                        //Tipo_Usuarios ob = new Tipo_Usuarios(snapshot.getValue().toString());
-                                        //tipos.add(ob.gettipo());
+                                        try{
+                                            Materias listMaterias = snapshot.getValue(Materias.class);
+                                            Toast.makeText(getContext(), "Materias! \n" + snapshot.getValue(), Toast.LENGTH_LONG).show();
+                                        }catch (Exception e){
+                                            Toast.makeText(getContext(), "Error /n" + e.toString(), Toast.LENGTH_LONG).show();
+                                        }
+
                                     }
 
                                     @Override
@@ -136,7 +148,7 @@ public class BusquedaFragment extends Fragment {
     }
 
     private void llenarLista() {
-        usersFindeds.add(new UsersFinded("dE2rnKpZO1Zw5rEYcHGz22qfu0C2", "Prueba", "Prueba", "3"));
+        usersFindeds.add(new Extend_UFinded("dE2rnKpZO1Zw5rEYcHGz22qfu0C2", "Prueba", "Prueba", 4.0));
         AdapterDatos adapterDatos = new AdapterDatos(usersFindeds, getContext());
         recyclerView.setAdapter(adapterDatos);
     }
