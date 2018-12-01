@@ -191,6 +191,8 @@ public class AsesorBusqFragment extends Fragment {
                                     @Override
                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                         if(position !=0) {
+                                            RecyclerAsesores.clearOnChildAttachStateChangeListeners();
+                                            extend_uFindeds.clear();
                                             /*
                                              *
                                              *           AQUI SE DEBE RELLENAR EL RECYCLERVIEW
@@ -219,7 +221,8 @@ public class AsesorBusqFragment extends Fragment {
                                                                     LM.getMateria4().equals(SMaterias.getSelectedItem().toString()) ||
                                                                     LM.getMateria5().equals(SMaterias.getSelectedItem().toString()) ||
                                                                     LM.getMateria6().equals(SMaterias.getSelectedItem().toString()) ||
-                                                                    LM.getMateria7().equals(SMaterias.getSelectedItem().toString())){
+                                                                    LM.getMateria7().equals(SMaterias.getSelectedItem().toString()) ||
+                                                                    LM.getMateria8().equals(SMaterias.getSelectedItem().toString())){
 
                                                                 Toast.makeText(getContext(), snapshot.getKey() + " : " + snapshot.getValue(), Toast.LENGTH_LONG).show();
 

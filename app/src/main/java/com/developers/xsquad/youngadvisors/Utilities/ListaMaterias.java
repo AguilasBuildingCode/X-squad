@@ -26,6 +26,8 @@ public class ListaMaterias {
         this.materia4 = materia4;
         this.materia5 = materia5;
         this.materia6 = materia6;
+        materia7 = " ";
+        materia8 = " ";
         this.nombre = nombre;
     }
 
@@ -37,6 +39,9 @@ public class ListaMaterias {
         this.materia3 = materia3;
         this.materia4 = materia4;
         this.materia5 = materia5;
+        materia6 = " ";
+        materia7 = " ";
+        materia8 = " ";
         this.nombre = nombre;
     }
 
@@ -47,6 +52,10 @@ public class ListaMaterias {
         this.materia2 = materia2;
         this.materia3 = materia3;
         this.materia4 = materia4;
+        materia5 = " ";
+        materia6 = " ";
+        materia7 = " ";
+        materia8 = " ";
         this.nombre = nombre;
     }
 
@@ -56,6 +65,11 @@ public class ListaMaterias {
         this.materia1 = materia1;
         this.materia2 = materia2;
         this.materia3 = materia3;
+        materia4 = " ";
+        materia5 = " ";
+        materia6 = " ";
+        materia7 = " ";
+        materia8 = " ";
         this.nombre = nombre;
     }
 
@@ -64,6 +78,12 @@ public class ListaMaterias {
         this.carrera = carrera;
         this.materia1 = materia1;
         this.materia2 = materia2;
+        materia3 = " ";
+        materia4 = " ";
+        materia5 = " ";
+        materia6 = " ";
+        materia7 = " ";
+        materia8 = " ";
         this.nombre = nombre;
     }
 
@@ -71,6 +91,13 @@ public class ListaMaterias {
         this.apellido = apellido;
         this.carrera = carrera;
         this.materia1 = materia1;
+        materia2 = " ";
+        materia3 = " ";
+        materia4 = " ";
+        materia5 = " ";
+        materia6 = " ";
+        materia7 = " ";
+        materia8 = " ";
         this.nombre = nombre;
     }
 
@@ -84,6 +111,7 @@ public class ListaMaterias {
         this.materia5 = materia5;
         this.materia6 = materia6;
         this.materia7 = materia7;
+        materia8 = " ";
         this.nombre = nombre;
     }
 
