@@ -112,16 +112,15 @@ public class BusquedaFragment extends Fragment {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
                                 // EXTRAEMOS CODIGO DE USUARIO <<<<<<<<<<<
-                                mDatabase.child(snapshot.getKey() + "/materias").child(snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                mDatabase.child(snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         try{
                                             Materias listMaterias = snapshot.getValue(Materias.class);
-                                            Toast.makeText(getContext(), "Materias! \n" + snapshot.getValue(), Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getContext(), "Materias! \n", Toast.LENGTH_LONG).show();
                                         }catch (Exception e){
                                             Toast.makeText(getContext(), "Error /n" + e.toString(), Toast.LENGTH_LONG).show();
                                         }
-
                                     }
 
                                     @Override
