@@ -7,10 +7,9 @@ import java.io.File;
 public class UsersFinded {
     private String Nombre, Apellido;
     double calificacion;
-    public UsersFinded(String Nombre, String Apellido, double Calificacion){
+    public UsersFinded(String Nombre, String Apellido){
         this.Nombre = Nombre;
         this.Apellido = Apellido;
-        this.calificacion = Calificacion;
     }
 
     public UsersFinded(){

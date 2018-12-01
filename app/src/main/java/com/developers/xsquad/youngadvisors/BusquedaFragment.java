@@ -147,7 +147,7 @@ public class BusquedaFragment extends Fragment {
     }
 
     private void llenarLista() {
-        usersFindeds.add(new Extend_UFinded("dE2rnKpZO1Zw5rEYcHGz22qfu0C2", "Prueba", "Prueba", 4.0));
+        usersFindeds.add(new Extend_UFinded("dE2rnKpZO1Zw5rEYcHGz22qfu0C2", "Prueba", "Prueba"));
         AdapterDatos adapterDatos = new AdapterDatos(usersFindeds, getContext());
         recyclerView.setAdapter(adapterDatos);
     }

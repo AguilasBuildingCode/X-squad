@@ -4,17 +4,31 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterDatos;
+import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.Extend_UFinded;
+import com.developers.xsquad.youngadvisors.Utilities.ListaMaterias;
+import com.developers.xsquad.youngadvisors.Utilities.Materias;
+import com.developers.xsquad.youngadvisors.Utilities.Users;
+import com.developers.xsquad.youngadvisors.Utilities.UsersFinded;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -41,7 +55,10 @@ public class AsesorBusqFragment extends Fragment {
     ArrayList<String> Carreras;
     ArrayList<String> Semestres;
     ArrayList<String> Materias;
+    ArrayList<UsersFinded> usersFindeds;
+    ArrayList<Extend_UFinded> extend_uFindeds;
     Spinner Scarrera, SSemestre, SMaterias;
+    RecyclerView RecyclerAsesores;
 
     private OnFragmentInteractionListener mListener;
 
@@ -85,10 +102,15 @@ public class AsesorBusqFragment extends Fragment {
         Scarrera = view.findViewById(R.id.spinnerCarrera);
         SSemestre = view.findViewById(R.id.spinnerSemestre);
         SMaterias = view.findViewById(R.id.spinnerMateria);
+        RecyclerAsesores = view.findViewById(R.id.RecyclerAsesores);
+        RecyclerAsesores.setLayoutManager(new LinearLayoutManager(getContext()));
 
         Carreras = new ArrayList<String>();
         Semestres = new ArrayList<String>();
         Materias = new ArrayList<String>();
+
+        usersFindeds = new ArrayList<UsersFinded>();
+        extend_uFindeds = new ArrayList<Extend_UFinded>();
 
         Carreras.add("Carreras");
         final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
@@ -147,7 +169,6 @@ public class AsesorBusqFragment extends Fragment {
                                 final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
                                 mDatabase.child("proyecto/db/materias/" + Scarrera.getSelectedItem().toString().trim() + "/" + SSemestre.getSelectedItem().toString().trim() + "/")
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
-                                            int x = 0;
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
@@ -169,11 +190,59 @@ public class AsesorBusqFragment extends Fragment {
                                 SMaterias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                     @Override
                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        /*
-                                        *
-                                        *           AQUI SE DEBE RELLENAR EL RECYCLERVIEW
-                                        * 
-                                        * */
+                                        if(position !=0) {
+                                            /*
+                                             *
+                                             *           AQUI SE DEBE RELLENAR EL RECYCLERVIEW
+                                             *
+                                             */
+                                            /*
+
+                                                private void llenarLista() {
+                                                usersFindeds.add(new Extend_UFinded("dE2rnKpZO1Zw5rEYcHGz22qfu0C2", "Prueba", "Prueba", 4.0));
+                                                AdapterDatos adapterDatos = new AdapterDatos(usersFindeds, getContext());
+                                                recyclerView.setAdapter(adapterDatos);
+                                                }
+
+                                            */
+
+                                            final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                                            mDatabase.child("proyecto/db/lista/").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
+                                                        try{
+                                                            ListaMaterias LM = snapshot.getValue(ListaMaterias.class);
+                                                            if(LM.getMateria1().equals(SMaterias.getSelectedItem().toString()) ||
+                                                                    LM.getMateria2().equals(SMaterias.getSelectedItem().toString()) ||
+                                                                    LM.getMateria3().equals(SMaterias.getSelectedItem().toString()) ||
+                                                                    LM.getMateria4().equals(SMaterias.getSelectedItem().toString()) ||
+                                                                    LM.getMateria5().equals(SMaterias.getSelectedItem().toString()) ||
+                                                                    LM.getMateria6().equals(SMaterias.getSelectedItem().toString()) ||
+                                                                    LM.getMateria7().equals(SMaterias.getSelectedItem().toString())){
+
+                                                                Toast.makeText(getContext(), snapshot.getKey() + " : " + snapshot.getValue(), Toast.LENGTH_LONG).show();
+
+                                                                UsersFinded UF = snapshot.getValue(UsersFinded.class);
+                                                                extend_uFindeds.add(new Extend_UFinded(snapshot.getKey(), UF.getNombre(), UF.getApellido()));
+                                                            }
+                                                        } catch (Exception e) {
+                                                            Log.e("LM", e.toString());
+                                                        }
+                                                    }
+
+                                                    AdapterDatos adapterDatos = new AdapterDatos(extend_uFindeds, getContext());
+                                                    RecyclerAsesores.setAdapter(adapterDatos);
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                        }
                                     }
 
                                     @Override
