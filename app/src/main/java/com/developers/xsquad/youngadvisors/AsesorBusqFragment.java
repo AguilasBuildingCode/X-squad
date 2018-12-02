@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,23 +15,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterDatos;
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.Extend_UFinded;
 import com.developers.xsquad.youngadvisors.Utilities.ListaMaterias;
-import com.developers.xsquad.youngadvisors.Utilities.Materias;
-import com.developers.xsquad.youngadvisors.Utilities.Users;
 import com.developers.xsquad.youngadvisors.Utilities.UsersFinded;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -98,20 +90,16 @@ public class AsesorBusqFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_asesor_busq, container, false);
-
         Scarrera = view.findViewById(R.id.spinnerCarrera);
         SSemestre = view.findViewById(R.id.spinnerSemestre);
         SMaterias = view.findViewById(R.id.spinnerMateria);
         RecyclerAsesores = view.findViewById(R.id.RecyclerAsesores);
         RecyclerAsesores.setLayoutManager(new LinearLayoutManager(getContext()));
-
         Carreras = new ArrayList<String>();
         Semestres = new ArrayList<String>();
         Materias = new ArrayList<String>();
-
         usersFindeds = new ArrayList<UsersFinded>();
         extend_uFindeds = new ArrayList<Extend_UFinded>();
-
         Carreras.add("Carreras");
         final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
         mDatabase.child("proyecto/db/materias/").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -208,7 +196,6 @@ public class AsesorBusqFragment extends Fragment {
 
                                             */
 
-                                            final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                                             mDatabase.child("proyecto/db/lista/").addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -223,9 +210,6 @@ public class AsesorBusqFragment extends Fragment {
                                                                     LM.getMateria6().equals(SMaterias.getSelectedItem().toString()) ||
                                                                     LM.getMateria7().equals(SMaterias.getSelectedItem().toString()) ||
                                                                     LM.getMateria8().equals(SMaterias.getSelectedItem().toString())){
-
-                                                                Toast.makeText(getContext(), snapshot.getKey() + " : " + snapshot.getValue(), Toast.LENGTH_LONG).show();
-
                                                                 UsersFinded UF = snapshot.getValue(UsersFinded.class);
                                                                 extend_uFindeds.add(new Extend_UFinded(snapshot.getKey(), UF.getNombre(), UF.getApellido()));
                                                             }

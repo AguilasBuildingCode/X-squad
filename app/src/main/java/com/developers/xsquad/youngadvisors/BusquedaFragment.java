@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterDatos;
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.Extend_UFinded;
+import com.developers.xsquad.youngadvisors.Utilities.ListaMaterias;
 import com.developers.xsquad.youngadvisors.Utilities.Materias;
 import com.developers.xsquad.youngadvisors.Utilities.Tipo_Usuarios;
 import com.developers.xsquad.youngadvisors.Utilities.UsersFinded;
@@ -39,11 +41,10 @@ public class BusquedaFragment extends Fragment {
     String AuxId;
 
     EditText Buscar;
-    Spinner Tipo;
-    ArrayList<String> tipos;
-    ArrayList<UsersFinded> ListFindUsers;
-    ArrayList<Extend_UFinded> usersFindeds;
+    ArrayList<UsersFinded> usersFindeds;
+    ArrayList<Extend_UFinded> extend_uFindeds;
     RecyclerView recyclerView;
+    DatabaseReference mDatabase;
 
     private OnFragmentInteractionListener mListener;
 
@@ -66,68 +67,33 @@ public class BusquedaFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        /*
-        tipos = new ArrayList<String>();
-        getTypeUsers();
-        tipos.add("Usuario"); //RESUELVE EL ERROR DE EL SPINNER
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, tipos);
-        Tipo.setAdapter(adapter);
-        Tipo.setSelection(0);
-        */
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_busqueda, container, false);
-        Tipo = view.findViewById(R.id.spinner_FindUsers);
+        mDatabase= FirebaseDatabase.getInstance().getReference();
         Buscar = view.findViewById(R.id.ETBuscar);
         recyclerView = view.findViewById(R.id.Resultados_busqueda);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        usersFindeds = new ArrayList<>();
-        ListFindUsers = new ArrayList<UsersFinded>();
-        //llenarLista();
-
-        tipos = new ArrayList<String>();
-        getTypeUsers();
-        tipos.add("Usuario"); //RESUELVE EL ERROR DE EL SPINNER
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, tipos);
-        Tipo.setAdapter(adapter);
-        Tipo.setSelection(0);
-
+        usersFindeds = new ArrayList<UsersFinded>();
+        extend_uFindeds = new ArrayList<Extend_UFinded>();
         Buscar.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(event.getAction() == KeyEvent.ACTION_DOWN){
                     /*
                     *
-                    *       AQUI VA EL CODIGO DE EXTRACION DE USUARIOS DE FIREBASE <<<<<<<<<----------
+                    *       AQUI SE BUSCARA EL USUARIO POR NOMBRE <<<<<<<<<---------- "VA A SER UN PEDO :("
                     *
                     */
-                    final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
-                    mDatabase.child("proyecto/db/lista/").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    mDatabase.child("proyecto/db/alumnos/").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
-                                // EXTRAEMOS CODIGO DE USUARIO <<<<<<<<<<<
-                                mDatabase.child(snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        try{
-                                            Materias listMaterias = snapshot.getValue(Materias.class);
-                                            Toast.makeText(getContext(), "Materias! \n", Toast.LENGTH_LONG).show();
-                                        }catch (Exception e){
-                                            Toast.makeText(getContext(), "Error /n" + e.toString(), Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
+                                Toast.makeText(getContext(), snapshot.getValue().toString(), Toast.LENGTH_LONG).show();
                             }
                         }
 
@@ -136,6 +102,7 @@ public class BusquedaFragment extends Fragment {
 
                         }
                     });
+
                     return true;
                 }
                 else{
@@ -144,12 +111,6 @@ public class BusquedaFragment extends Fragment {
             }
         });
         return view;
-    }
-
-    private void llenarLista() {
-        usersFindeds.add(new Extend_UFinded("dE2rnKpZO1Zw5rEYcHGz22qfu0C2", "Prueba", "Prueba"));
-        AdapterDatos adapterDatos = new AdapterDatos(usersFindeds, getContext());
-        recyclerView.setAdapter(adapterDatos);
     }
 
     public void onButtonPressed(Uri uri) {
@@ -177,33 +138,5 @@ public class BusquedaFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
-    }
-
-    public void getTypeUsers(){
-        final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("proyecto/db/Type_User/").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    mDatabase.child("Type_User/").child(snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Tipo_Usuarios ob = new Tipo_Usuarios(snapshot.getValue().toString());
-                            tipos.add(ob.gettipo());
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 }

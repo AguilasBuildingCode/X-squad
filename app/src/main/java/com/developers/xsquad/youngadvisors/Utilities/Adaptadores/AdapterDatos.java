@@ -70,7 +70,10 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
             mountainsRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    try{holderDatos.Foto.setImageURI(Uri.parse(localFile.getPath()));} catch (Exception e){
+                    try{
+                        holderDatos.Foto.setImageURI(Uri.parse(localFile.getPath()));
+                        localFile.delete();
+                    } catch (Exception e){
                         Log.e("RecyclerNoSetFoto", e.toString());
                     }
                 }
