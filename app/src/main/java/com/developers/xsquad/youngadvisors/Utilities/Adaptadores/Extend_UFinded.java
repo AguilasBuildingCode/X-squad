@@ -10,6 +10,11 @@ public class Extend_UFinded extends UsersFinded {
         this.Id = Id;
     }
 
+    public Extend_UFinded (String Id, UsersFinded ob){
+        super(ob.getNombre(), ob.getApellido());
+        this.Id = Id;
+    }
+
     public Extend_UFinded(){
 
     }

@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterDatos;
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.Extend_UFinded;
 import com.developers.xsquad.youngadvisors.Utilities.ListaMaterias;
@@ -186,15 +185,6 @@ public class AsesorBusqFragment extends Fragment {
                                              *           AQUI SE DEBE RELLENAR EL RECYCLERVIEW
                                              *
                                              */
-                                            /*
-
-                                                private void llenarLista() {
-                                                usersFindeds.add(new Extend_UFinded("dE2rnKpZO1Zw5rEYcHGz22qfu0C2", "Prueba", "Prueba", 4.0));
-                                                AdapterDatos adapterDatos = new AdapterDatos(usersFindeds, getContext());
-                                                recyclerView.setAdapter(adapterDatos);
-                                                }
-
-                                            */
 
                                             mDatabase.child("proyecto/db/lista/").addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override

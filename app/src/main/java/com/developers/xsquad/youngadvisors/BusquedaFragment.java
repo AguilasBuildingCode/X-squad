@@ -1,35 +1,36 @@
 package com.developers.xsquad.youngadvisors;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterDatos;
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.Extend_UFinded;
-import com.developers.xsquad.youngadvisors.Utilities.ListaMaterias;
-import com.developers.xsquad.youngadvisors.Utilities.Materias;
 import com.developers.xsquad.youngadvisors.Utilities.Tipo_Usuarios;
 import com.developers.xsquad.youngadvisors.Utilities.UsersFinded;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static android.support.v4.content.ContextCompat.getSystemService;
 
 public class BusquedaFragment extends Fragment {
 
@@ -41,10 +42,10 @@ public class BusquedaFragment extends Fragment {
     String AuxId;
 
     EditText Buscar;
-    ArrayList<UsersFinded> usersFindeds;
     ArrayList<Extend_UFinded> extend_uFindeds;
-    RecyclerView recyclerView;
+    RecyclerView RecyclerAlumnos;
     DatabaseReference mDatabase;
+    ProgressDialog progressDialog;
 
     private OnFragmentInteractionListener mListener;
 
@@ -72,34 +73,58 @@ public class BusquedaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_busqueda, container, false);
+        final View view = inflater.inflate(R.layout.fragment_busqueda, container, false);
+        progressDialog = new ProgressDialog(getContext());
         mDatabase= FirebaseDatabase.getInstance().getReference();
         Buscar = view.findViewById(R.id.ETBuscar);
-        recyclerView = view.findViewById(R.id.Resultados_busqueda);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        usersFindeds = new ArrayList<UsersFinded>();
+        RecyclerAlumnos = view.findViewById(R.id.Resultados_busqueda);
+        RecyclerAlumnos.setLayoutManager(new LinearLayoutManager(getContext()));
         extend_uFindeds = new ArrayList<Extend_UFinded>();
         Buscar.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(event.getAction() == KeyEvent.ACTION_DOWN){
+                if(event.getAction() == KeyEvent.ACTION_DOWN && !Buscar.getText().toString().isEmpty()){
                     /*
                     *
                     *       AQUI SE BUSCARA EL USUARIO POR NOMBRE <<<<<<<<<---------- "VA A SER UN PEDO :("
                     *
                     */
-
+                    extend_uFindeds.clear();
+                    progressDialog.setMessage("Buscando...");
+                    progressDialog.show();
+                    final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
                     mDatabase.child("proyecto/db/alumnos/").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
-                                Toast.makeText(getContext(), snapshot.getValue().toString(), Toast.LENGTH_LONG).show();
+                                mDatabase.child("alumnos/").child(snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        UsersFinded UF = snapshot.getValue(UsersFinded.class);
+                                        if(UF.getNombre().contains(Buscar.getText().toString().trim()) ||
+                                                UF.getApellido().contains(Buscar.getText().toString().trim())){
+                                            extend_uFindeds.add(new Extend_UFinded(snapshot.getKey(), UF));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
                             }
+
+                            AdapterDatos adapterDatos = new AdapterDatos(extend_uFindeds, getContext());
+                            RecyclerAlumnos.setAdapter(adapterDatos);
+                            progressDialog.dismiss();
+
+                            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getContext().INPUT_METHOD_SERVICE);
+                            inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            progressDialog.dismiss();
                         }
                     });
 
