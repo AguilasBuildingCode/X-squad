@@ -7,17 +7,19 @@
     tools:context=".RegistrarEPActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/common_google_signin_btn_text_dark_focused"
         android:orientation="vertical">
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="31dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="231dp"
             android:orientation="horizontal">
 
             <Space
@@ -25,12 +27,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/logo" />
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_width="200dp"
+                android:layout_height="279dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/gif2"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout"
+                app:layout_constraintVertical_bias="0.071" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -54,12 +64,14 @@
 
             <EditText
                 android:id="@+id/ETCorreoEP"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Correo"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+                android:textColorHint="@color/common_google_signin_btn_text_dark_pressed" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -83,12 +95,14 @@
 
             <EditText
                 android:id="@+id/ETPassEP"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Contraseña"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+                android:textColorHint="@color/common_google_signin_btn_text_dark_pressed" />
 
             <Space
                 android:layout_width="wrap_content"

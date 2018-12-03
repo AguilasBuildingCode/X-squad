@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -48,7 +50,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class RegistrarActivity extends AppCompatActivity {
-
+    AnimationDrawable  animacion;
     String UserId, varNombre, varApellido, varTelefono, varTipoUsuario, varCarrera, varCotizacion;
     EditText Nombre, Apellidos, Telefono, Cotizacion;
     FirebaseUser firebaseUser;
@@ -75,7 +77,18 @@ public class RegistrarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registrar);
+
+        animacion = (AnimationDrawable)getResources().getDrawable( R.drawable.animacion);
+
+        ImageView vista = new ImageView(this);
+        vista.setBackgroundColor(Color.WHITE);
+        vista.setImageDrawable(animacion);
+        vista.setOnClickListener(new View.OnClickListener()
+        {public void onClick(View view) { animacion.start(); } });
+        setContentView(vista);
+
+
+    setContentView(R.layout.activity_registrar);
 
         Nombre = findViewById(R.id.ETNombre);
         Apellidos = findViewById(R.id.ETApellidos);
