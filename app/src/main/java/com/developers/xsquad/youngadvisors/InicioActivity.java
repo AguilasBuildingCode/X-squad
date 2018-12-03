@@ -32,7 +32,8 @@ public class InicioActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         PerfilFragment.OnFragmentInteractionListener,
         ModificarPerfilFragment.OnFragmentInteractionListener,
-        BusquedaFragment.OnFragmentInteractionListener{
+        BusquedaFragment.OnFragmentInteractionListener,
+        AsesorBusqFragment.OnFragmentInteractionListener{
 
     String name, email;
     Uri photoUrl;
@@ -140,6 +141,9 @@ public class InicioActivity extends AppCompatActivity
             startActivity(intent);
         } else if(id == R.id.NavBuscar){
             miFragment = new BusquedaFragment();
+            Seleccionado = true;
+        } else if(id == R.id.Nav_Alumnos){
+            miFragment = new AsesorBusqFragment();
             Seleccionado = true;
         }
         if(Seleccionado) {

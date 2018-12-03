@@ -446,7 +446,7 @@ public class RegistrarActivity extends AppCompatActivity {
         switch (type_user.getSelectedItemPosition()){
             case 1:
                 //insertar datos en nodo alumnos
-                Alumnos obAlumnos = new Alumnos(varNombre, varApellido, varTelefono, varCarrera);
+                Alumnos obAlumnos = new Alumnos(varApellido, varCarrera, varNombre, varTelefono);
                 DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
                 mDatabase.child("proyecto/db/alumnos").child(UserId).setValue(obAlumnos);
                 break;
@@ -459,35 +459,9 @@ public class RegistrarActivity extends AppCompatActivity {
                 default:
                     break;
         }
-        switch (type_carriers.getSelectedItemPosition()){
-            case 1:
-                FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
-                        + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
-                        new Insert_Carreras(varNombre, varApellido, varTelefono));
-                break;
-            case 2:
-                FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
-                        + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
-                        new Insert_Carreras(varNombre, varApellido, varTelefono));
-                break;
-            case 3:
-                FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
-                        + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
-                        new Insert_Carreras(varNombre, varApellido, varTelefono));
-                break;
-            case 4:
-                FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
-                        + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
-                        new Insert_Carreras(varNombre, varApellido, varTelefono));
-                break;
-            case 5:
-                FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
-                        + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
-                        new Insert_Carreras(varNombre, varApellido, varTelefono));
-                break;
-                default:
-                    break;
-        }
+        FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
+            + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
+            new Insert_Carreras(varNombre, varApellido, varTelefono));
         UFoto.setImageResource(R.drawable.usuario);
         Nombre.setText("");
         Apellidos.setText("");

@@ -6,7 +6,10 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/NavBuscar"
-            android:title="Buscar" />
+            android:title="Asesores" />
+        <item
+            android:id="@+id/Nav_Alumnos"
+            android:title="Alumnos" />
         <item
             android:id="@+id/NavPerfil"
             android:icon="@drawable/iconoperfil"

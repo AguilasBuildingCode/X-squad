@@ -1,26 +1,27 @@
 package com.developers.xsquad.youngadvisors.Utilities;
 
+import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.Extend_UFinded;
+
 import java.io.File;
 
 public class UsersFinded {
-    private String Nombre, Id, Apellido, Calificacion;
-    public UsersFinded(String Id, String Nombre, String Apellido, String Calificacion){
-        this.Id = Id;
+    private String Nombre, Apellido;
+    double calificacion;
+    public UsersFinded(String Nombre, String Apellido){
         this.Nombre = Nombre;
         this.Apellido = Apellido;
-        this.Calificacion = Calificacion;
     }
 
     public UsersFinded(){
 
     }
 
-    public String getCalificacion() {
-        return Calificacion;
+    public double getCalificacion() {
+        return calificacion;
     }
 
-    public void setCalificacion(String calificacion) {
-        Calificacion = calificacion;
+    public void setCalificacion(double calificacion) {
+        calificacion = calificacion;
     }
 
     public String getApellido() {
@@ -37,13 +38,5 @@ public class UsersFinded {
 
     public void setNombre(String nombre) {
         Nombre = nombre;
-    }
-
-    public String getId() {
-        return Id;
-    }
-
-    public void setId(String id) {
-        Id = id;
     }
 }

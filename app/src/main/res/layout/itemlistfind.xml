@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="5dp" />
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +15,7 @@
             android:orientation="horizontal">
 
             <Space
-                android:layout_width="40dp"
+                android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
@@ -35,7 +27,7 @@
                 app:srcCompat="@drawable/usuario" />
 
             <Space
-                android:layout_width="20dp"
+                android:layout_width="10dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
@@ -47,27 +39,26 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="15dp" />
+                    android:layout_height="35dp" />
 
                 <TextView
                     android:id="@+id/EDFindNombre"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:text="Nombre"
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <ImageView
-                    android:id="@+id/IVFindEstrellas"
-                    android:layout_width="200dp"
-                    android:layout_height="50dp"
-                    app:srcCompat="@drawable/estrella_5" />
+                    android:layout_height="35dp" />
             </LinearLayout>
 
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
         </LinearLayout>
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
