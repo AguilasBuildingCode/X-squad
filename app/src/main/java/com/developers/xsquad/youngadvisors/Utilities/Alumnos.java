@@ -1,13 +1,13 @@
 package com.developers.xsquad.youngadvisors.Utilities;
 
 public class Alumnos {
-    private String Nombre, Apellido, Telefono, Carrera;
+    private String nombre, apellido, telefono, carrera;
 
-    public Alumnos(String Nombre, String Apellido, String Carrera, String Telefono){
-        this.Nombre = Nombre;
-        this.Apellido = Apellido;
-        this.Carrera = Carrera;
-        this.Telefono = Telefono;
+    public Alumnos(String apellido, String carrera, String nombre, String telefono){
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.carrera = carrera;
+        this.telefono = telefono;
     }
 
     public Alumnos(){
@@ -15,34 +15,34 @@ public class Alumnos {
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public String getApellido() {
-        return Apellido;
+        return apellido;
     }
 
     public void setApellido(String apellido) {
-        Apellido = apellido;
+        this.apellido = apellido;
     }
 
     public String getTelefono() {
-        return Telefono;
+        return telefono;
     }
 
     public void setTelefono(String telefono) {
-        Telefono = telefono;
+        this.telefono = telefono;
     }
 
     public String getCarrera() {
-        return Carrera;
+        return carrera;
     }
 
     public void setCarrera(String carrera) {
-        Carrera = carrera;
+        this.carrera = carrera;
     }
 }
