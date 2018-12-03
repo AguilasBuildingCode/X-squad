@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -26,7 +28,7 @@ import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class PerfilRegistroActivity extends AppCompatActivity {
-
+    AnimationDrawable  animacion;
     private static final int COD_SELECCIONADA = 10;
     private static final int COD_FOTO = 20;
     private static final String CARPETA_IMAGEN = "imagenes";
@@ -44,6 +46,16 @@ public class PerfilRegistroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_registro);
         Foto = findViewById(R.id.IVPerfil);
+
+        animacion = (AnimationDrawable)getResources().getDrawable( R.drawable.animacion);
+
+        ImageView vista = new ImageView(this);
+        vista.setBackgroundColor(Color.WHITE);
+        vista.setImageDrawable(animacion);
+        vista.setOnClickListener(new View.OnClickListener()
+        {public void onClick(View view) { animacion.start(); } });
+        setContentView(vista);
+
     }
 
     private void abriCamara() {
