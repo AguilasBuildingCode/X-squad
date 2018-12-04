@@ -11,9 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterDatos;
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.Extend_UFinded;
 import com.developers.xsquad.youngadvisors.Utilities.ListaMaterias;
@@ -209,7 +212,18 @@ public class AsesorBusqFragment extends Fragment {
                                                     }
 
                                                     AdapterDatos adapterDatos = new AdapterDatos(extend_uFindeds, getContext());
+                                                    adapterDatos.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            Toast.makeText(getContext(),
+                                                                    "UI: " + extend_uFindeds.get(RecyclerAsesores.getChildAdapterPosition(v)).getId(),
+                                                                    Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
                                                     RecyclerAsesores.setAdapter(adapterDatos);
+
+                                                    InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getContext().INPUT_METHOD_SERVICE);
+                                                    inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
                                                 }
 
