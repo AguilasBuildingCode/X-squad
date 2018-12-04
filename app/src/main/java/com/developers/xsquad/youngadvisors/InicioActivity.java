@@ -133,7 +133,6 @@ public class InicioActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.NavPerfil) {
-            //PerfilFragment perfilFragment = new PerfilFragment();
             PerfilUsuariosFragment perfilUsuariosFragment = new PerfilUsuariosFragment();
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
             Bundle args = new Bundle();
