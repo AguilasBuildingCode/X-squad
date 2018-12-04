@@ -30,7 +30,6 @@ import java.io.File;
 
 public class InicioActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        PerfilFragment.OnFragmentInteractionListener,
         ModificarPerfilFragment.OnFragmentInteractionListener,
         BusquedaFragment.OnFragmentInteractionListener,
         AsesorBusqFragment.OnFragmentInteractionListener{
@@ -130,8 +129,7 @@ public class InicioActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.NavPerfil) {
-            miFragment = new PerfilFragment();
-            Seleccionado = true;
+
         } else if (id == R.id.NavModPErfil) {
             miFragment = new ModificarPerfilFragment();
             Seleccionado = true;
