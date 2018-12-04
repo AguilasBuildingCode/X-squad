@@ -219,12 +219,13 @@ public class AsesorBusqFragment extends Fragment {
                                                         public void onClick(View v) {
                                                             try {
                                                                 //Cambiamos de fragment al de perfil ---------------
-                                                                PerfilFragment perfilFragment = new PerfilFragment();
+                                                                //PerfilFragment perfilFragment = new PerfilFragment();
+                                                                PerfilUsuariosFragment perfilUsuariosFragment = new PerfilUsuariosFragment();
                                                                 fragmentTransaction = getFragmentManager().beginTransaction();
                                                                 Bundle args = new Bundle();
                                                                 args.putString("UI", extend_uFindeds.get(RecyclerAsesores.getChildAdapterPosition(v)).getId());
-                                                                perfilFragment.setArguments(args);
-                                                                fragmentTransaction.replace(R.id.fragment, perfilFragment);
+                                                                perfilUsuariosFragment.setArguments(args);
+                                                                fragmentTransaction.replace(R.id.fragment, perfilUsuariosFragment);
                                                                 fragmentTransaction.addToBackStack(null);
                                                                 fragmentTransaction.commit();
                                                             }catch (Exception e){

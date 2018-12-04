@@ -32,10 +32,10 @@ import java.io.File;
 
 public class InicioActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        PerfilFragment.OnFragmentInteractionListener,
         ModificarPerfilFragment.OnFragmentInteractionListener,
         BusquedaFragment.OnFragmentInteractionListener,
-        AsesorBusqFragment.OnFragmentInteractionListener{
+        AsesorBusqFragment.OnFragmentInteractionListener,
+        PerfilUsuariosFragment.OnFragmentInteractionListener{
 
     String name, email;
     Uri photoUrl;
@@ -133,12 +133,13 @@ public class InicioActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.NavPerfil) {
-            PerfilFragment perfilFragment = new PerfilFragment();
+            //PerfilFragment perfilFragment = new PerfilFragment();
+            PerfilUsuariosFragment perfilUsuariosFragment = new PerfilUsuariosFragment();
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
             Bundle args = new Bundle();
             args.putString("UI", uid);
-            perfilFragment.setArguments(args);
-            fragmentTransaction.replace(R.id.fragment, perfilFragment);
+            perfilUsuariosFragment.setArguments(args);
+            fragmentTransaction.replace(R.id.fragment, perfilUsuariosFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
             Seleccionado = false;
