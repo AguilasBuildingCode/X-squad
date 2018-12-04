@@ -22,7 +22,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDatos> {
+public class AdapterDatos
+        extends RecyclerView.Adapter<AdapterDatos.ViewHolderDatos>
+        implements View.OnClickListener{
 
     FirebaseStorage storage;
     StorageReference storageRef;
@@ -30,6 +32,7 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
 
     List<Extend_UFinded> arratList;
     Context context;
+    private View.OnClickListener onClickListener;
 
     public AdapterDatos(ArrayList<Extend_UFinded> arrayList, Context context){
         this.arratList = arrayList;
@@ -44,6 +47,7 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
         RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.setOnClickListener(this);
         return new ViewHolderDatos(view);
     }
 
@@ -53,6 +57,7 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
         viewHolderDatos.Calificacion = (arratList.get(i).getCalificacion());
 
         if(arratList.get(i).getId() != null){
+            //Cargar imagen de db remota
             cargarImagenFirebase(arratList.get(i).getId(), viewHolderDatos);
         }
         else
@@ -92,6 +97,17 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
     @Override
     public int getItemCount() {
         return arratList.size();
+    }
+
+    public void setOnClickListener(View.OnClickListener onClickListener){
+        this.onClickListener = onClickListener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(onClickListener != null){
+            onClickListener.onClick(v);
+        }
     }
 
     public class ViewHolderDatos extends RecyclerView.ViewHolder {

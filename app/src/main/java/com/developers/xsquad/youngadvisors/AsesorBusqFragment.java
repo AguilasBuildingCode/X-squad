@@ -5,15 +5,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterDatos;
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.Extend_UFinded;
 import com.developers.xsquad.youngadvisors.Utilities.ListaMaterias;
@@ -50,6 +54,7 @@ public class AsesorBusqFragment extends Fragment {
     ArrayList<Extend_UFinded> extend_uFindeds;
     Spinner Scarrera, SSemestre, SMaterias;
     RecyclerView RecyclerAsesores;
+    FragmentTransaction fragmentTransaction;
 
     private OnFragmentInteractionListener mListener;
 
@@ -209,7 +214,29 @@ public class AsesorBusqFragment extends Fragment {
                                                     }
 
                                                     AdapterDatos adapterDatos = new AdapterDatos(extend_uFindeds, getContext());
+                                                    adapterDatos.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            try {
+                                                                //Cambiamos de fragment al de perfil ---------------
+                                                                //PerfilFragment perfilFragment = new PerfilFragment();
+                                                                PerfilUsuariosFragment perfilUsuariosFragment = new PerfilUsuariosFragment();
+                                                                fragmentTransaction = getFragmentManager().beginTransaction();
+                                                                Bundle args = new Bundle();
+                                                                args.putString("UI", extend_uFindeds.get(RecyclerAsesores.getChildAdapterPosition(v)).getId());
+                                                                perfilUsuariosFragment.setArguments(args);
+                                                                fragmentTransaction.replace(R.id.fragment, perfilUsuariosFragment);
+                                                                fragmentTransaction.addToBackStack(null);
+                                                                fragmentTransaction.commit();
+                                                            }catch (Exception e){
+                                                                Toast.makeText(getContext(), "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+                                                            }
+                                                        }
+                                                    });
                                                     RecyclerAsesores.setAdapter(adapterDatos);
+
+                                                    InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getContext().INPUT_METHOD_SERVICE);
+                                                    inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
                                                 }
 

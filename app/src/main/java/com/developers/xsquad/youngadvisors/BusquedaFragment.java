@@ -2,10 +2,13 @@ package com.developers.xsquad.youngadvisors;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.RouteInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -45,6 +48,7 @@ public class BusquedaFragment extends Fragment {
     ArrayList<Extend_UFinded> extend_uFindeds;
     RecyclerView RecyclerAlumnos;
     DatabaseReference mDatabase;
+    FragmentTransaction fragmentTransaction;
     ProgressDialog progressDialog;
 
     private OnFragmentInteractionListener mListener;
@@ -89,6 +93,7 @@ public class BusquedaFragment extends Fragment {
                     *       AQUI SE BUSCARA EL USUARIO POR NOMBRE <<<<<<<<<---------- "VA A SER UN PEDO :("
                     *
                     */
+
                     extend_uFindeds.clear();
                     progressDialog.setMessage("Buscando...");
                     progressDialog.show();
@@ -115,6 +120,26 @@ public class BusquedaFragment extends Fragment {
                             }
 
                             AdapterDatos adapterDatos = new AdapterDatos(extend_uFindeds, getContext());
+                            adapterDatos.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    try {
+                                        //Cambiamos de fragment al de perfil ---------------
+                                        //PerfilFragment perfilFragment = new PerfilFragment();
+                                        PerfilUsuariosFragment perfilUsuariosFragment = new PerfilUsuariosFragment();
+                                        fragmentTransaction = getFragmentManager().beginTransaction();
+                                        Bundle args = new Bundle();
+                                        args.putString("UI", extend_uFindeds.get(RecyclerAlumnos.getChildAdapterPosition(v)).getId());
+                                        perfilUsuariosFragment.setArguments(args);
+                                        fragmentTransaction.replace(R.id.fragment, perfilUsuariosFragment);
+                                        fragmentTransaction.addToBackStack(null);
+                                        fragmentTransaction.commit();
+
+                                    }catch (Exception e){
+                                        Toast.makeText(getContext(), "Error: \n" + e.toString(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
                             RecyclerAlumnos.setAdapter(adapterDatos);
                             progressDialog.dismiss();
 
@@ -135,6 +160,7 @@ public class BusquedaFragment extends Fragment {
                 }
             }
         });
+
         return view;
     }
 

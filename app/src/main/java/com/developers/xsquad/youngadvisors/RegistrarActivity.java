@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.developers.xsquad.youngadvisors.Utilities.Alumnos;
 import com.developers.xsquad.youngadvisors.Utilities.Asesores;
 import com.developers.xsquad.youngadvisors.Utilities.Carreras;
+import com.developers.xsquad.youngadvisors.Utilities.DataPerfil;
 import com.developers.xsquad.youngadvisors.Utilities.Insert_Carreras;
 import com.developers.xsquad.youngadvisors.Utilities.Tipo_Usuarios;
 import com.developers.xsquad.youngadvisors.Utilities.Users;
@@ -51,7 +52,7 @@ import java.util.ArrayList;
 
 public class RegistrarActivity extends AppCompatActivity {
     AnimationDrawable  animacion;
-    String UserId, varNombre, varApellido, varTelefono, varTipoUsuario, varCarrera, varCotizacion;
+    String UserId, varNombre, varApellido, varTelefono, varTipoUsuario, varCarrera, varCotizacion, varCorreo;
     EditText Nombre, Apellidos, Telefono, Cotizacion;
     FirebaseUser firebaseUser;
     Bitmap Foto;
@@ -257,6 +258,7 @@ public class RegistrarActivity extends AppCompatActivity {
         }
 
         UserId = firebaseUser.getUid();
+        varCorreo = firebaseUser.getEmail();
         varNombre = Nombre.getText().toString().trim();
         varApellido = Apellidos.getText().toString().trim();
         varTelefono = Telefono.getText().toString().trim();
@@ -455,6 +457,10 @@ public class RegistrarActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
             + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
             new Insert_Carreras(varNombre, varApellido, varTelefono));
+        FirebaseDatabase.getInstance().getReference().child("proyecto/db/perfir/")
+        .child(UserId).setValue(
+                new DataPerfil(varApellido, varCarrera, varCorreo, varNombre, "I'm young!", varTelefono)
+        );
         UFoto.setImageResource(R.drawable.usuario);
         Nombre.setText("");
         Apellidos.setText("");

@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -32,7 +34,8 @@ public class InicioActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ModificarPerfilFragment.OnFragmentInteractionListener,
         BusquedaFragment.OnFragmentInteractionListener,
-        AsesorBusqFragment.OnFragmentInteractionListener{
+        AsesorBusqFragment.OnFragmentInteractionListener,
+        PerfilUsuariosFragment.OnFragmentInteractionListener{
 
     String name, email;
     Uri photoUrl;
@@ -47,6 +50,7 @@ public class InicioActivity extends AppCompatActivity
     FirebaseStorage storage;
     StorageReference storageRef;
     StorageReference mountainsRef;
+    FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +133,15 @@ public class InicioActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.NavPerfil) {
-
+            PerfilUsuariosFragment perfilUsuariosFragment = new PerfilUsuariosFragment();
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            Bundle args = new Bundle();
+            args.putString("UI", uid);
+            perfilUsuariosFragment.setArguments(args);
+            fragmentTransaction.replace(R.id.fragment, perfilUsuariosFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+            Seleccionado = false;
         } else if (id == R.id.NavModPErfil) {
             miFragment = new ModificarPerfilFragment();
             Seleccionado = true;
