@@ -46,16 +46,6 @@ public class PerfilRegistroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_registro);
         Foto = findViewById(R.id.IVPerfil);
-
-        animacion = (AnimationDrawable)getResources().getDrawable( R.drawable.animacion);
-
-        ImageView vista = new ImageView(this);
-        vista.setBackgroundColor(Color.WHITE);
-        vista.setImageDrawable(animacion);
-        vista.setOnClickListener(new View.OnClickListener()
-        {public void onClick(View view) { animacion.start(); } });
-        setContentView(vista);
-
     }
 
     private void abriCamara() {

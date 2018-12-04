@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         checkCurrentUser();
     }
-    //obtienes la referencia del Layout.
+
 
     public void loguearUsuario(View view) {
         final String email = Correo.getText().toString().trim();
