@@ -56,12 +56,12 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/TVNombre"
+                    android:id="@+id/TVPerfilNombre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView"
-                    android:textAlignment="center"
+                    android:text="Nombre"
+                    android:textAlignment="viewStart"
                     android:textSize="24sp" />
 
                 <Space
@@ -85,12 +85,12 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/TVCorre"
+                    android:id="@+id/TVPerfilCorreo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView"
-                    android:textAlignment="center"
+                    android:text="Correo"
+                    android:textAlignment="viewStart"
                     android:textSize="24sp" />
 
                 <Space
@@ -148,12 +148,12 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/TVPerfilCarrera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView"
-                    android:textAlignment="center"
+                    android:text="Carrera"
+                    android:textAlignment="viewStart"
                     android:textSize="24sp" />
 
                 <Space
@@ -172,17 +172,58 @@
                 android:orientation="horizontal">
 
                 <Space
+                    android:layout_width="59dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/TVPerfilTelefono"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Telefono"
+                    android:textAlignment="viewStart"
+                    android:textSize="24sp" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/IVPerfilLlamar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@android:drawable/ic_menu_call" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Space
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/TVPerfilSobreMi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView"
-                    android:textAlignment="center"
+                    android:text="Sobre mi"
+                    android:textAlignment="viewStart"
                     android:textSize="24sp" />
 
                 <Space

@@ -60,5 +60,9 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

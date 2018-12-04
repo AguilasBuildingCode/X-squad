@@ -58,8 +58,8 @@ public class PerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View vista = inflater.inflate(R.layout.fragment_perfil, container, false);
-        Nombre = vista.findViewById(R.id.TVNombre);
-        Correo = vista.findViewById(R.id.TVCorre);
+        Nombre = vista.findViewById(R.id.TVPerfilNombre);
+        Correo = vista.findViewById(R.id.TVPerfilCorreo);
         Foto = vista.findViewById(R.id.IVPerfilView);
 
         Nombre.setText(name);
