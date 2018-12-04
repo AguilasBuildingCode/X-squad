@@ -123,6 +123,9 @@ public class BusquedaFragment extends Fragment {
                                             "UI: "
                                                     + extend_uFindeds.get(RecyclerAlumnos.getChildAdapterPosition(v)).getId(),
                                             Toast.LENGTH_LONG).show();
+                                    //Cambiamos de fragment al de perfil ---------------
+                                    PerfilFragment perfilFragment = new PerfilFragment();
+                                    getFragmentManager().beginTransaction().replace(R.id.fragment, perfilFragment).commit();
                                 }
                             });
                             RecyclerAlumnos.setAdapter(adapterDatos);
