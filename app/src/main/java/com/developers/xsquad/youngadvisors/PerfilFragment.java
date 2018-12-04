@@ -81,11 +81,45 @@ public class PerfilFragment extends Fragment {
         progressDialog = new ProgressDialog(getContext());
         bundle = getArguments();
         UI = bundle.getString("UI");
+
+        Nombre = vista.findViewById(R.id.TVPerfilUNombre);
+        Correo = vista.findViewById(R.id.TVPerfilUCorreo);
+        Foto = vista.findViewById(R.id.IVPerfilUFoto);
+
         DescargarImagen(UI);
 
-        Nombre = vista.findViewById(R.id.TVPerfilNombre);
-        Correo = vista.findViewById(R.id.TVPerfilCorreo);
-        Foto = vista.findViewById(R.id.IVPerfilView);
+        final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("proyecto/db/perfir/").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    mDatabase.child("perfir/").child(snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            try {
+                                if(snapshot.getKey().equals(UI)) {
+                                    DataPerfil dataPerfil = snapshot.getValue(DataPerfil.class);
+                                    Nombre.setText(dataPerfil.getNombre());
+                                    Correo.setText(dataPerfil.getCorreo());
+                                }
+                            }catch (Exception e){
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         return inflater.inflate(R.layout.fragment_perfil, container, false);
     }
@@ -157,15 +191,15 @@ public class PerfilFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        mDatabase.child("perfir/" + snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        mDatabase.child("perfir/").child(snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 try {
-                                    if(snapshot.getKey().equals(UI)) {
+                                    //if(snapshot.getKey().equals(UI)) {
                                         DP = snapshot.getValue(DataPerfil.class);
                                         Toast.makeText(getContext(), DP.toString(), Toast.LENGTH_LONG).show();
                                         Nombre.setText(DP.getNombre());
-                                    }
+                                    //}
                                 } catch (Exception e) {
                                     //Toast.makeText(getContext(), "Error \n" + e.toString(), Toast.LENGTH_LONG).show();
                                 }

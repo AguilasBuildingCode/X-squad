@@ -1,11 +1,12 @@
 package com.developers.xsquad.youngadvisors.Utilities;
 
 public class DataPerfil {
-    private String apellido, carrera, nombre, sobremi, telefono;
+    private String apellido, carrera, correo, nombre, sobremi, telefono;
 
-    public DataPerfil(String apellido, String carrera, String nombre, String sobremi, String telefono){
+    public DataPerfil(String apellido, String carrera, String correo, String nombre, String sobremi, String telefono){
         this.apellido = apellido;
         this.carrera = carrera;
+        this.correo = correo;
         this.nombre = nombre;
         this.sobremi = sobremi;
         this.telefono = telefono;
@@ -61,5 +62,13 @@ public class DataPerfil {
                 + "carrera: " + carrera + "\n"
                 + "telefono: " + telefono + "\n"
                 + "Sobre mi: " + sobremi;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 }
