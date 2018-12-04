@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -53,6 +54,7 @@ public class AsesorBusqFragment extends Fragment {
     ArrayList<Extend_UFinded> extend_uFindeds;
     Spinner Scarrera, SSemestre, SMaterias;
     RecyclerView RecyclerAsesores;
+    FragmentTransaction fragmentTransaction;
 
     private OnFragmentInteractionListener mListener;
 
@@ -215,9 +217,19 @@ public class AsesorBusqFragment extends Fragment {
                                                     adapterDatos.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
-                                                            Toast.makeText(getContext(),
-                                                                    "UI: " + extend_uFindeds.get(RecyclerAsesores.getChildAdapterPosition(v)).getId(),
-                                                                    Toast.LENGTH_LONG).show();
+                                                            try {
+                                                                //Cambiamos de fragment al de perfil ---------------
+                                                                PerfilFragment perfilFragment = new PerfilFragment();
+                                                                fragmentTransaction = getFragmentManager().beginTransaction();
+                                                                Bundle args = new Bundle();
+                                                                args.putString("UI", extend_uFindeds.get(RecyclerAsesores.getChildAdapterPosition(v)).getId());
+                                                                perfilFragment.setArguments(args);
+                                                                fragmentTransaction.replace(R.id.fragment, perfilFragment);
+                                                                fragmentTransaction.addToBackStack(null);
+                                                                fragmentTransaction.commit();
+                                                            }catch (Exception e){
+                                                                Toast.makeText(getContext(), "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+                                                            }
                                                         }
                                                     });
                                                     RecyclerAsesores.setAdapter(adapterDatos);

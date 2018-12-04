@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.developers.xsquad.youngadvisors.Utilities.Alumnos;
 import com.developers.xsquad.youngadvisors.Utilities.Asesores;
 import com.developers.xsquad.youngadvisors.Utilities.Carreras;
+import com.developers.xsquad.youngadvisors.Utilities.DataPerfil;
 import com.developers.xsquad.youngadvisors.Utilities.Insert_Carreras;
 import com.developers.xsquad.youngadvisors.Utilities.Tipo_Usuarios;
 import com.developers.xsquad.youngadvisors.Utilities.Users;
@@ -455,6 +456,10 @@ public class RegistrarActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference().child("proyecto/db/carrera/"
             + type_carriers.getSelectedItemPosition()).child(UserId).setValue(
             new Insert_Carreras(varNombre, varApellido, varTelefono));
+        FirebaseDatabase.getInstance().getReference().child("proyecto/db/perfir/")
+        .child(UserId).setValue(
+                new DataPerfil(varApellido, varCarrera, varNombre, "I'm young!", varTelefono)
+        );
         UFoto.setImageResource(R.drawable.usuario);
         Nombre.setText("");
         Apellidos.setText("");

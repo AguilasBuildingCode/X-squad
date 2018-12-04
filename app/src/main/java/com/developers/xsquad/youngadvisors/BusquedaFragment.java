@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -46,6 +48,7 @@ public class BusquedaFragment extends Fragment {
     ArrayList<Extend_UFinded> extend_uFindeds;
     RecyclerView RecyclerAlumnos;
     DatabaseReference mDatabase;
+    FragmentTransaction fragmentTransaction;
     ProgressDialog progressDialog;
 
     private OnFragmentInteractionListener mListener;
@@ -90,6 +93,7 @@ public class BusquedaFragment extends Fragment {
                     *       AQUI SE BUSCARA EL USUARIO POR NOMBRE <<<<<<<<<---------- "VA A SER UN PEDO :("
                     *
                     */
+
                     extend_uFindeds.clear();
                     progressDialog.setMessage("Buscando...");
                     progressDialog.show();
@@ -119,13 +123,20 @@ public class BusquedaFragment extends Fragment {
                             adapterDatos.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(getContext(),
-                                            "UI: "
-                                                    + extend_uFindeds.get(RecyclerAlumnos.getChildAdapterPosition(v)).getId(),
-                                            Toast.LENGTH_LONG).show();
-                                    //Cambiamos de fragment al de perfil ---------------
-                                    PerfilFragment perfilFragment = new PerfilFragment();
-                                    getFragmentManager().beginTransaction().replace(R.id.fragment, perfilFragment).commit();
+                                    try {
+                                        //Cambiamos de fragment al de perfil ---------------
+                                        PerfilFragment perfilFragment = new PerfilFragment();
+                                        fragmentTransaction = getFragmentManager().beginTransaction();
+                                        Bundle args = new Bundle();
+                                        args.putString("UI", extend_uFindeds.get(RecyclerAlumnos.getChildAdapterPosition(v)).getId());
+                                        perfilFragment.setArguments(args);
+                                        fragmentTransaction.replace(R.id.fragment, perfilFragment);
+                                        fragmentTransaction.addToBackStack(null);
+                                        fragmentTransaction.commit();
+
+                                    }catch (Exception e){
+                                        Toast.makeText(getContext(), "Error: \n" + e.toString(), Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             });
                             RecyclerAlumnos.setAdapter(adapterDatos);
@@ -148,6 +159,7 @@ public class BusquedaFragment extends Fragment {
                 }
             }
         });
+
         return view;
     }
 
