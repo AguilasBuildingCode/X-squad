@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class BusquedaFragment extends Fragment {
     String AuxId;
 
     EditText Buscar;
+    Button btnBuscar;
     ArrayList<Extend_UFinded> extend_uFindeds;
     RecyclerView RecyclerAlumnos;
     DatabaseReference mDatabase;
@@ -86,18 +88,88 @@ public class BusquedaFragment extends Fragment {
         progressDialog = new ProgressDialog(getContext());
         mDatabase= FirebaseDatabase.getInstance().getReference();
         Buscar = view.findViewById(R.id.ETBuscar);
+        btnBuscar = view.findViewById(R.id.BtnBusAlumnos);
         RecyclerAlumnos = view.findViewById(R.id.Resultados_busqueda);
         RecyclerAlumnos.setLayoutManager(new LinearLayoutManager(getContext()));
         extend_uFindeds = new ArrayList<Extend_UFinded>();
+        btnBuscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!Buscar.getText().toString().isEmpty()){
+                    /*
+                     *
+                     *       AQUI SE BUSCARA EL USUARIO POR NOMBRE <<<<<<<<<---------- "VA A SER UN PEDO :("
+                     *
+                     */
+
+                    extend_uFindeds.clear();
+                    progressDialog.setMessage("Buscando...");
+                    progressDialog.show();
+                    final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("proyecto/db/alumnos/").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
+                                mDatabase.child("alumnos/").child(snapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        UsersFinded UF = snapshot.getValue(UsersFinded.class);
+                                        if(UF.getNombre().contains(Buscar.getText().toString().trim()) ||
+                                                UF.getApellido().contains(Buscar.getText().toString().trim())){
+                                            extend_uFindeds.add(new Extend_UFinded(snapshot.getKey(), UF));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+
+                            AdapterDatos adapterDatos = new AdapterDatos(extend_uFindeds, getContext());
+                            adapterDatos.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    try {
+                                        //Cambiamos de fragment al de perfil ---------------
+                                        //PerfilFragment perfilFragment = new PerfilFragment();
+                                        PerfilUsuariosFragment perfilUsuariosFragment = new PerfilUsuariosFragment();
+                                        fragmentTransaction = getFragmentManager().beginTransaction();
+                                        Bundle args = new Bundle();
+                                        args.putString("UI", extend_uFindeds.get(RecyclerAlumnos.getChildAdapterPosition(v)).getId());
+                                        perfilUsuariosFragment.setArguments(args);
+                                        fragmentTransaction.replace(R.id.fragment, perfilUsuariosFragment);
+                                        fragmentTransaction.addToBackStack(null);
+                                        fragmentTransaction.commit();
+
+                                    }catch (Exception e){
+                                        Toast.makeText(getContext(), "Error: \n" + e.toString(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                            RecyclerAlumnos.setAdapter(adapterDatos);
+                            progressDialog.dismiss();
+
+                            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getContext().INPUT_METHOD_SERVICE);
+                            inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            progressDialog.dismiss();
+                        }
+                    });
+                }
+                else{
+                }
+            }
+        });
+        /*
         Buscar.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(event.getAction() == KeyEvent.ACTION_DOWN && !Buscar.getText().toString().isEmpty()){
-                    /*
-                    *
-                    *       AQUI SE BUSCARA EL USUARIO POR NOMBRE <<<<<<<<<---------- "VA A SER UN PEDO :("
-                    *
-                    */
 
                     extend_uFindeds.clear();
                     progressDialog.setMessage("Buscando...");
@@ -165,6 +237,7 @@ public class BusquedaFragment extends Fragment {
                 }
             }
         });
+        */
         return view;
     }
 
