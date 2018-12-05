@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.provider.CallLog;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +16,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterComentarios;
+import com.developers.xsquad.youngadvisors.Utilities.Calificador;
+import com.developers.xsquad.youngadvisors.Utilities.CalificadorData;
 import com.developers.xsquad.youngadvisors.Utilities.Carreras;
 import com.developers.xsquad.youngadvisors.Utilities.DataPerfil;
+import com.developers.xsquad.youngadvisors.Utilities.Tipo_Usuarios;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +34,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class PerfilUsuariosFragment extends Fragment {
 
@@ -41,10 +48,12 @@ public class PerfilUsuariosFragment extends Fragment {
     ImageView Foto;
     Bundle bundle;
     String UI;
+    ArrayList<Calificador> calificadors;
 
     FirebaseStorage storage;
     StorageReference storageRef;
     StorageReference mountainsRef;
+    DatabaseReference mDatabase;
 
     private OnFragmentInteractionListener mListener;
 
@@ -74,10 +83,9 @@ public class PerfilUsuariosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_perfil_usuarios, container, false);
-
         bundle = getArguments();
         UI = bundle.getString("UI");
-
+        calificadors = new ArrayList<Calificador>();
         Foto = view.findViewById(R.id.IVPerfilFotoUsuarios);
         Nombre = view.findViewById(R.id.TVPerfilNombreUsuarios);
         Carrera = view.findViewById(R.id.TVPerfilCarreraUsuarios);
@@ -85,7 +93,7 @@ public class PerfilUsuariosFragment extends Fragment {
         Telefono = view.findViewById(R.id.TVPerfilTelefonoUsuario);
         Sobremi = view.findViewById(R.id.TVPerfilSobremiUsuarios);
 
-        final DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
+        mDatabase= FirebaseDatabase.getInstance().getReference();
         mDatabase.child("proyecto/db/perfir/").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -96,7 +104,7 @@ public class PerfilUsuariosFragment extends Fragment {
                             try {
                                 if(snapshot.getKey().equals(UI)) {
                                     DataPerfil dataPerfil = snapshot.getValue(DataPerfil.class);
-                                    Nombre.setText(dataPerfil.getNombre());
+                                    Nombre.setText(dataPerfil.getNombre() + " " + dataPerfil.getApellido());
                                     Carrera.setText(dataPerfil.getCarrera());
                                     Correo.setText(dataPerfil.getCorreo());
                                     Telefono.setText(dataPerfil.getTelefono());
@@ -119,8 +127,76 @@ public class PerfilUsuariosFragment extends Fragment {
 
             }
         });
-
         DescargarImagen(UI);
+        //Cargar comentarios...
+
+        mDatabase= FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("proyecto/db/calificaciones/").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    mDatabase.child(snapshot.getKey() + "/calificador/").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(UI.equals(snapshot.getKey())) {
+                                for (final DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                    mDatabase.child(snapshot1.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            for(final DataSnapshot snapshot2 : snapshot1.getChildren()) {
+                                                mDatabase.child(snapshot2.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        //Toast.makeText(getContext(), snapshot2.getValue().toString(), Toast.LENGTH_LONG).show();
+                                                        try {
+                                                            Calificador calificador = new Calificador(snapshot2.getKey(), snapshot2.getValue(CalificadorData.class));
+                                                            calificadors.add(calificador);
+                                                        } catch (Exception e) {
+                                                            Toast.makeText(getContext(), "Error: \n" + e.toString(), Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
+                                            }
+                                            //Recycler ------------------
+                                            //Toast.makeText(getContext(), snapshot1.getValue().toString(), Toast.LENGTH_LONG).show();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        RecyclerView RComentarios = view.findViewById(R.id.ResultadoComentarios);
+        ArrayList<Calificador> calificadors = new ArrayList<Calificador>();
+        calificadors.add(new Calificador("eMDTRqJqzUeAamVsLvoOOqjzdUv1", "Perez", 5, "ok", "Aaron"));
+        AdapterComentarios adapterComentarios = new AdapterComentarios(calificadors, getContext());
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        RComentarios.setLayoutManager(llm);
+        RComentarios.setAdapter(adapterComentarios);
 
         return view;
     }

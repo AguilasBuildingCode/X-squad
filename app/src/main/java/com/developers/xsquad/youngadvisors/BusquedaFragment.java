@@ -20,8 +20,11 @@ import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterComentarios;
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterDatos;
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.Extend_UFinded;
+import com.developers.xsquad.youngadvisors.Utilities.Calificador;
 import com.developers.xsquad.youngadvisors.Utilities.Tipo_Usuarios;
 import com.developers.xsquad.youngadvisors.Utilities.UsersFinded;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +33,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -160,7 +165,6 @@ public class BusquedaFragment extends Fragment {
                 }
             }
         });
-
         return view;
     }
 
