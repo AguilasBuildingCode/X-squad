@@ -77,7 +77,14 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:src="@android:drawable/stat_sys_phone_call_forward" />
+                    android:src="@android:drawable/sym_call_outgoing" />
+
+                <ImageView
+                    android:id="@+id/IVPerfilCorreo"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:src="@android:drawable/sym_action_email" />
 
                 <Space
                     android:layout_width="wrap_content"
@@ -101,7 +108,7 @@
 
                 <TextView
                     android:id="@+id/TVPerfilNombreUsuarios"
-                    android:layout_width="100dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Nombre"
@@ -314,7 +321,7 @@
                 <ImageView
                     android:id="@+id/IVPerfilEstrellasUsuarios"
                     android:layout_width="200dp"
-                    android:layout_height="100dp"
+                    android:layout_height="50dp"
                     android:layout_weight="1"
                     android:src="@drawable/estrella_1" />
 
@@ -326,7 +333,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="20dp" />
+                android:layout_height="30dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -358,21 +365,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
 
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/ResultadoComentarios"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/RecyclerComentarios"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
+                android:layout_height="match_parent" />
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1" />
+                android:layout_height="60dp" />
 
         </LinearLayout>
     </ScrollView>
