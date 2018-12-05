@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.provider.CallLog;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -54,6 +55,10 @@ public class PerfilUsuariosFragment extends Fragment {
     StorageReference storageRef;
     StorageReference mountainsRef;
     DatabaseReference mDatabase;
+    RecyclerView RComentarios;
+    AdapterComentarios adapterComentarios;
+    LinearLayoutManager llm;
+    FragmentTransaction fragmentTransaction;
 
     private OnFragmentInteractionListener mListener;
 
@@ -92,6 +97,7 @@ public class PerfilUsuariosFragment extends Fragment {
         Correo = view.findViewById(R.id.TVPerfilCorreoUsuarios);
         Telefono = view.findViewById(R.id.TVPerfilTelefonoUsuario);
         Sobremi = view.findViewById(R.id.TVPerfilSobremiUsuarios);
+        RComentarios = view.findViewById(R.id.ResultadoComentarios);
 
         mDatabase= FirebaseDatabase.getInstance().getReference();
         mDatabase.child("proyecto/db/perfir/").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -149,8 +155,27 @@ public class PerfilUsuariosFragment extends Fragment {
                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                         //Toast.makeText(getContext(), snapshot2.getValue().toString(), Toast.LENGTH_LONG).show();
                                                         try {
-                                                            Calificador calificador = new Calificador(snapshot2.getKey(), snapshot2.getValue(CalificadorData.class));
+                                                            final Calificador calificador = new Calificador(snapshot2.getKey(), snapshot2.getValue(CalificadorData.class));
                                                             calificadors.add(calificador);
+                                                            adapterComentarios = new AdapterComentarios(calificadors, getContext());
+                                                            adapterComentarios.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    //Toast.makeText(getContext(), calificadors.get(RComentarios.getChildAdapterPosition(v)).getId(),Toast.LENGTH_LONG).show();
+                                                                    PerfilUsuariosFragment perfilUsuariosFragment = new PerfilUsuariosFragment();
+                                                                    fragmentTransaction = getFragmentManager().beginTransaction();
+                                                                    Bundle args = new Bundle();
+                                                                    args.putString("UI", calificadors.get(RComentarios.getChildAdapterPosition(v)).getId());
+                                                                    perfilUsuariosFragment.setArguments(args);
+                                                                    fragmentTransaction.replace(R.id.fragment, perfilUsuariosFragment);
+                                                                    fragmentTransaction.addToBackStack(null);
+                                                                    fragmentTransaction.commit();
+                                                                }
+                                                            });
+                                                            llm = new LinearLayoutManager(getContext());
+                                                            llm.setOrientation(LinearLayoutManager.VERTICAL);
+                                                            RComentarios.setLayoutManager(llm);
+                                                            RComentarios.setAdapter(adapterComentarios);
                                                         } catch (Exception e) {
                                                             Toast.makeText(getContext(), "Error: \n" + e.toString(), Toast.LENGTH_LONG).show();
                                                         }
@@ -188,15 +213,6 @@ public class PerfilUsuariosFragment extends Fragment {
 
             }
         });
-
-        RecyclerView RComentarios = view.findViewById(R.id.ResultadoComentarios);
-        ArrayList<Calificador> calificadors = new ArrayList<Calificador>();
-        calificadors.add(new Calificador("eMDTRqJqzUeAamVsLvoOOqjzdUv1", "Perez", 5, "ok", "Aaron"));
-        AdapterComentarios adapterComentarios = new AdapterComentarios(calificadors, getContext());
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        RComentarios.setLayoutManager(llm);
-        RComentarios.setAdapter(adapterComentarios);
 
         return view;
     }
