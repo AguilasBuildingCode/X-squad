@@ -3,7 +3,6 @@ package com.developers.xsquad.youngadvisors;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CallLog;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -12,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,9 +18,8 @@ import android.widget.Toast;
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterComentarios;
 import com.developers.xsquad.youngadvisors.Utilities.Calificador;
 import com.developers.xsquad.youngadvisors.Utilities.CalificadorData;
-import com.developers.xsquad.youngadvisors.Utilities.Carreras;
 import com.developers.xsquad.youngadvisors.Utilities.DataPerfil;
-import com.developers.xsquad.youngadvisors.Utilities.Tipo_Usuarios;
+import com.developers.xsquad.youngadvisors.Utilities.EstrellasPerfil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -44,9 +41,11 @@ public class PerfilUsuariosFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+    double Total = 0;
+    int ContadorComentarios = 0;
 
     TextView Nombre, Carrera, Telefono, Sobremi, Correo;
-    ImageView Foto;
+    ImageView Foto, Estrellas_Perfil;
     Bundle bundle;
     String UI;
     ArrayList<Calificador> calificadors;
@@ -97,6 +96,7 @@ public class PerfilUsuariosFragment extends Fragment {
         Correo = view.findViewById(R.id.TVPerfilCorreoUsuarios);
         Telefono = view.findViewById(R.id.TVPerfilTelefonoUsuario);
         Sobremi = view.findViewById(R.id.TVPerfilSobremiUsuarios);
+        Estrellas_Perfil = view.findViewById(R.id.IVPerfilEstrellasUsuarios);
         RComentarios = view.findViewById(R.id.ResultadoComentarios);
 
         mDatabase= FirebaseDatabase.getInstance().getReference();
@@ -156,6 +156,8 @@ public class PerfilUsuariosFragment extends Fragment {
                                                         try {
                                                             final Calificador calificador = new Calificador(snapshot2.getKey(), snapshot2.getValue(CalificadorData.class));
                                                             calificadors.add(calificador);
+                                                            Total += calificador.getCalificacion();
+                                                            ContadorComentarios++;
                                                             adapterComentarios = new AdapterComentarios(calificadors, getContext());
                                                             adapterComentarios.setOnClickListener(new View.OnClickListener() {
                                                                 @Override
@@ -174,6 +176,29 @@ public class PerfilUsuariosFragment extends Fragment {
                                                             llm.setOrientation(LinearLayoutManager.VERTICAL);
                                                             RComentarios.setLayoutManager(llm);
                                                             RComentarios.setAdapter(adapterComentarios);
+
+                                                            switch ((int)(Total/ContadorComentarios))
+                                                            {
+                                                                case 1:
+                                                                    Estrellas_Perfil.setImageResource(R.drawable.estrella_1);
+                                                                    break;
+                                                                case 2:
+                                                                    Estrellas_Perfil.setImageResource(R.drawable.estrella_2);
+                                                                    break;
+                                                                case 3:
+                                                                    Estrellas_Perfil.setImageResource(R.drawable.estrella_3);
+                                                                    break;
+                                                                case 4:
+                                                                    Estrellas_Perfil.setImageResource(R.drawable.estrella_4);
+                                                                    break;
+                                                                case 5:
+                                                                    Estrellas_Perfil.setImageResource(R.drawable.estrella_5);
+                                                                    break;
+                                                                default:
+                                                                    Estrellas_Perfil.setImageResource(R.drawable.estrella_1);
+                                                                    break;
+                                                            }
+
                                                         } catch (Exception e) {
                                                             Toast.makeText(getContext(), "Error: \n" + e.toString(), Toast.LENGTH_LONG).show();
                                                         }
@@ -209,7 +234,7 @@ public class PerfilUsuariosFragment extends Fragment {
 
             }
         });
-
+        
         return view;
     }
 

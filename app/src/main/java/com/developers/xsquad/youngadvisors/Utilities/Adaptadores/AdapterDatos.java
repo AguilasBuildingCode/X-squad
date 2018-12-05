@@ -32,6 +32,7 @@ public class AdapterDatos
 
     List<Extend_UFinded> arratList;
     Context context;
+    double Total;
     private View.OnClickListener onClickListener;
 
     public AdapterDatos(ArrayList<Extend_UFinded> arrayList, Context context){
@@ -53,6 +54,7 @@ public class AdapterDatos
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderDatos viewHolderDatos, int i) {
+        Total += arratList.get(i).getCalificacion();
         viewHolderDatos.Nombre.setText(arratList.get(i).getNombre() + " " + arratList.get(i).getApellido());
         viewHolderDatos.Calificacion = (arratList.get(i).getCalificacion());
 
@@ -64,6 +66,10 @@ public class AdapterDatos
         {
             viewHolderDatos.Foto.setImageResource(R.drawable.usuario);
         }
+    }
+
+    public double getTotal() {
+        return Total;
     }
 
     public void cargarImagenFirebase(String ruta, final ViewHolderDatos holderDatos){
