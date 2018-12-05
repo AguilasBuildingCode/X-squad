@@ -37,6 +37,8 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Buscar..."
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"
                     android:inputType="textPersonName" />
 
                 <Space

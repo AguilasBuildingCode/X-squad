@@ -74,6 +74,9 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Nombre"
+                    android:textColor="@android:color/white"
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
+                    android:textColorHint="@android:color/white"
                     android:inputType="textPersonName" />
 
                 <Space
@@ -102,6 +105,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:textColor="@android:color/white"
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
+                    android:textColorHint="@android:color/white"
                     android:hint="Apellido"
                     android:inputType="textPersonName" />
 
