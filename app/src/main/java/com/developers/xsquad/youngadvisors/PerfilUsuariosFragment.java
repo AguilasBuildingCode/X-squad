@@ -234,7 +234,7 @@ public class PerfilUsuariosFragment extends Fragment {
 
             }
         });
-        
+
         return view;
     }
 
