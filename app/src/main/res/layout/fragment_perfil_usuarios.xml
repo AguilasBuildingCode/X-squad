@@ -17,13 +17,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="400dp"
+                android:layout_height="154dp"
+                android:background="@drawable/estrellas"
                 android:orientation="horizontal">
 
                 <Space
@@ -31,12 +28,49 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/gifImageView"
+                    android:layout_width="107dp"
+                    android:layout_height="150dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/estrellas"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.071" />
+
+
                 <ImageView
                     android:id="@+id/IVPerfilFotoUsuarios"
-                    android:layout_width="125dp"
-                    android:layout_height="125dp"
+                    android:layout_width="207dp"
+                    android:layout_height="150dp"
                     android:layout_weight="1"
                     android:src="@drawable/usuario" />
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/gifImageView1"
+                    android:layout_width="207dp"
+                    android:layout_height="150dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/estrellas"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.071" />
 
                 <Space
                     android:layout_width="wrap_content"
@@ -99,6 +133,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/common_google_signin_btn_text_light_focused"
                 android:orientation="horizontal">
 
                 <Space
@@ -143,6 +178,7 @@
                     android:layout_weight="1"
                     android:text="Carrera: "
                     android:textColor="@android:color/white"
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
                     android:textSize="18sp" />
 
                 <TextView
@@ -151,8 +187,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Carrera"
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
                     android:textColor="@android:color/white"
-                    android:textSize="20dp" />
+                    android:textSize="19dp" />
 
                 <Space
                     android:layout_width="wrap_content"
@@ -180,6 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Correo: "
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
@@ -189,8 +227,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Correo"
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
                     android:textColor="@android:color/white"
-                    android:textSize="20dp" />
+                    android:textSize="19dp" />
 
                 <Space
                     android:layout_width="wrap_content"
@@ -218,6 +257,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Telefono: "
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
@@ -227,8 +267,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Telefono"
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
                     android:textColor="@android:color/white"
-                    android:textSize="20dp" />
+                    android:textSize="19dp" />
 
                 <Space
                     android:layout_width="wrap_content"
@@ -256,6 +297,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Sobre mi: "
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
 
@@ -264,6 +306,7 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
                     android:text="Sobre mi"
                     android:textColor="@android:color/white"
                     android:textSize="20dp" />
