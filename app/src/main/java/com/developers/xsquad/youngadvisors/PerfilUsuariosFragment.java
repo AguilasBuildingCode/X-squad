@@ -153,7 +153,6 @@ public class PerfilUsuariosFragment extends Fragment {
                                                 mDatabase.child(snapshot2.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                        //Toast.makeText(getContext(), snapshot2.getValue().toString(), Toast.LENGTH_LONG).show();
                                                         try {
                                                             final Calificador calificador = new Calificador(snapshot2.getKey(), snapshot2.getValue(CalificadorData.class));
                                                             calificadors.add(calificador);
@@ -161,7 +160,6 @@ public class PerfilUsuariosFragment extends Fragment {
                                                             adapterComentarios.setOnClickListener(new View.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(View v) {
-                                                                    //Toast.makeText(getContext(), calificadors.get(RComentarios.getChildAdapterPosition(v)).getId(),Toast.LENGTH_LONG).show();
                                                                     PerfilUsuariosFragment perfilUsuariosFragment = new PerfilUsuariosFragment();
                                                                     fragmentTransaction = getFragmentManager().beginTransaction();
                                                                     Bundle args = new Bundle();
@@ -187,8 +185,6 @@ public class PerfilUsuariosFragment extends Fragment {
                                                     }
                                                 });
                                             }
-                                            //Recycler ------------------
-                                            //Toast.makeText(getContext(), snapshot1.getValue().toString(), Toast.LENGTH_LONG).show();
                                         }
 
                                         @Override
