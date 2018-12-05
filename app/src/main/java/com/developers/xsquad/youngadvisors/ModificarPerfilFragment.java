@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,20 +16,16 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 public class ModificarPerfilFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     String name, email;
     Uri photoUrl;
-    boolean emailVerified;
-    String uid;
-    FirebaseUser user;
+    ImageView Foto;
+    EditText Nombre, Apellido, Telefono, Sobremi;
 
     private OnFragmentInteractionListener mListener;
 
@@ -58,8 +56,13 @@ public class ModificarPerfilFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getUserProfile();
-        return inflater.inflate(R.layout.fragment_modificar_perfil, container, false);
+        View view = inflater.inflate(R.layout.fragment_modificar_perfil, container, false);
+        Nombre = view.findViewById(R.id.ETModPerfilNombre);
+        Apellido = view.findViewById(R.id.ETModPerfilApellido);
+        Telefono = view.findViewById(R.id.ETModPerfilTelefono);
+        Sobremi = view.findViewById(R.id.ETModPerfilSobremi);
+        Foto = view.findViewById(R.id.IVModPerfilFoto);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -95,14 +98,7 @@ public class ModificarPerfilFragment extends Fragment {
 
     }
 
-    public void getUserProfile() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            name = user.getDisplayName();
-            email = user.getEmail();
-            photoUrl = user.getPhotoUrl();
-            emailVerified = user.isEmailVerified();
-            uid = user.getUid();
-        }
+    private void ActualizarDatos(){
+
     }
 }
