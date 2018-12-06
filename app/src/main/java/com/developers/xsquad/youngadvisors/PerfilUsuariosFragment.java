@@ -1,5 +1,6 @@
 package com.developers.xsquad.youngadvisors;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,12 +15,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.developers.xsquad.youngadvisors.Utilities.Adaptadores.AdapterComentarios;
 import com.developers.xsquad.youngadvisors.Utilities.Calificador;
 import com.developers.xsquad.youngadvisors.Utilities.CalificadorData;
 import com.developers.xsquad.youngadvisors.Utilities.DataPerfil;
-import com.developers.xsquad.youngadvisors.Utilities.EstrellasPerfil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -58,6 +57,7 @@ public class PerfilUsuariosFragment extends Fragment {
     AdapterComentarios adapterComentarios;
     LinearLayoutManager llm;
     FragmentTransaction fragmentTransaction;
+    ProgressDialog progressDialog;
 
     private OnFragmentInteractionListener mListener;
 
@@ -98,7 +98,10 @@ public class PerfilUsuariosFragment extends Fragment {
         Sobremi = view.findViewById(R.id.TVPerfilSobremiUsuarios);
         Estrellas_Perfil = view.findViewById(R.id.IVPerfilEstrellasUsuarios);
         RComentarios = view.findViewById(R.id.ResultadoComentarios);
+        progressDialog = new ProgressDialog(getContext());
 
+        progressDialog.setMessage("Cargnado ...");
+        progressDialog.show();
         mDatabase= FirebaseDatabase.getInstance().getReference();
         mDatabase.child("proyecto/db/perfir/").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -118,11 +121,12 @@ public class PerfilUsuariosFragment extends Fragment {
                                 }
                             }catch (Exception e){
                             }
+                            progressDialog.dismiss();
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            progressDialog.dismiss();
                         }
                     });
                 }
@@ -130,12 +134,13 @@ public class PerfilUsuariosFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                progressDialog.dismiss();
             }
         });
         DescargarImagen(UI);
         //Cargar comentarios...
-
+        progressDialog.setMessage("Cargando comentarios...");
+        progressDialog.show();
         mDatabase= FirebaseDatabase.getInstance().getReference();
         mDatabase.child("proyecto/db/calificaciones/").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -202,11 +207,13 @@ public class PerfilUsuariosFragment extends Fragment {
                                                         } catch (Exception e) {
                                                             Toast.makeText(getContext(), "Error: \n" + e.toString(), Toast.LENGTH_LONG).show();
                                                         }
+
+                                                        progressDialog.dismiss();
                                                     }
 
                                                     @Override
                                                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                                        progressDialog.dismiss();
                                                     }
                                                 });
                                             }
@@ -214,7 +221,7 @@ public class PerfilUsuariosFragment extends Fragment {
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                            progressDialog.dismiss();
                                         }
                                     });
                                 }
@@ -223,7 +230,7 @@ public class PerfilUsuariosFragment extends Fragment {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            progressDialog.dismiss();
                         }
                     });
                 }
@@ -231,7 +238,7 @@ public class PerfilUsuariosFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                progressDialog.dismiss();
             }
         });
 
@@ -267,6 +274,8 @@ public class PerfilUsuariosFragment extends Fragment {
 
     public void DescargarImagen(String UI) {
         try {
+            progressDialog.setMessage("Descargando foto de perfil...");
+            progressDialog.show();
             storage = FirebaseStorage.getInstance();
             storageRef = storage.getReference();
             mountainsRef = storageRef.child("fotos/" + UI + ".jpg");
@@ -275,15 +284,18 @@ public class PerfilUsuariosFragment extends Fragment {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                     Foto.setImageURI(Uri.parse(localFile.getPath()));
+                    progressDialog.dismiss();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle any errors
+                    progressDialog.dismiss();
                     Toast.makeText(getContext(), "Error al descargar foto de peril", Toast.LENGTH_LONG).show();
                 }
             });
         }catch (Exception e){
+            progressDialog.dismiss();
             Toast.makeText(getContext(), "No pudimos descargar tu foto de perfil", Toast.LENGTH_LONG).show();
         }
     }

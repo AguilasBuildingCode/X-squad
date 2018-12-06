@@ -37,9 +37,9 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Buscar..."
+                    android:inputType="textPersonName"
                     android:textColor="@android:color/white"
-                    android:textColorHint="@android:color/white"
-                    android:inputType="textPersonName" />
+                    android:textColorHint="@android:color/white" />
 
                 <Space
                     android:layout_width="5dp"
@@ -67,7 +67,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/Resultados_busqueda"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
             <Space
                 android:layout_width="match_parent"
