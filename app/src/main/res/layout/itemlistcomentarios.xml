@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -54,7 +54,7 @@
 
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="10dp" />
+                        android:layout_height="2dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -68,7 +68,7 @@
 
                         <TextView
                             android:id="@+id/TVPComentariosNombre"
-                            android:layout_width="150dp"
+                            android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Nombre"
@@ -98,7 +98,7 @@
 
                         <TextView
                             android:id="@+id/TVPComentariosComentarios"
-                            android:layout_width="150dp"
+                            android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Comentario"
