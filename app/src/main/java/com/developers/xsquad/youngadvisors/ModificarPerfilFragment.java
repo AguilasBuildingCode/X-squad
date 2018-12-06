@@ -25,10 +25,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.developers.xsquad.youngadvisors.Utilities.Tipo_Usuarios;
 import com.developers.xsquad.youngadvisors.Utilities.Users;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -65,7 +68,7 @@ public class ModificarPerfilFragment extends Fragment {
     private static final String CARPETA_IMAGEN = "imagenes";
     private static final String CARPETA_PRINCIPAL = "misImagenesApp";
     private String path;
-    private Uri miPath;
+    private Uri miPath, downloadUri;
     boolean UpdatePick = false;
     FirebaseStorage storage;
     StorageReference storageRef;
@@ -233,10 +236,59 @@ public class ModificarPerfilFragment extends Fragment {
         Limpiar();
     }
 
+    private void RegistrarURL() {
+        try {
+            //Para ingresar los datos de usuario creado
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(users.getNombre() + " " + users.getApellidos())
+                    .setPhotoUri(downloadUri)
+                    .build();
+            firebaseUser.updateProfile(profileUpdates)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                //Todo salio bien
+                                Toast.makeText(getContext(), "Perfil actualizado", Toast.LENGTH_LONG).show();
+                            }else {
+                                Toast.makeText(getContext(), "No se puede actualizar perfil", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Error al actualizar perfil", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void ExtraerURL() {
+        try{
+            //extraer url de la imagen almacenada
+            mountainsRef = storageRef.child("fotos/");
+            mountainsRef.child(firebaseUser.getUid() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    // Got the download URL for the user
+                    downloadUri = uri;
+                    Toast.makeText(getContext(), "url consegido", Toast.LENGTH_LONG).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    Toast.makeText(getContext(), "url no encontrado" + exception.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Error al conseguir el url" + e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
     public void Limpiar(){
 
         if(UpdatePick){
             ActualizarFoto();
+            ExtraerURL();
+            RegistrarURL();
             UFoto.setImageResource(R.drawable.usuario);
         }else {
             UpdatePick = false;

@@ -138,6 +138,8 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Telefono"
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
+                    android:textColorHint="@android:color/white"
                     android:inputType="textPersonName" />
 
                 <Space
@@ -167,6 +169,8 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Sobre mi"
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
+                    android:textColorHint="@android:color/white"
                     android:inputType="textPersonName" />
 
                 <Space

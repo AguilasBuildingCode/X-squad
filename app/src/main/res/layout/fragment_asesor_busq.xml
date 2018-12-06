@@ -24,9 +24,12 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/common_google_signin_btn_text_dark_disabled"
                 android:text="Asesores"
+                android:textColor="@android:color/white"
                 android:textAlignment="center"
-                android:textSize="24sp" />
+                android:textColorHint="@android:color/white"
+                android:textSize="34sp" />
 
             <Space
                 android:layout_width="match_parent"
@@ -44,9 +47,13 @@
 
                 <Spinner
                     android:id="@+id/spinnerCarrera"
-                    android:layout_width="185dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1" />
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="Carrera"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
 
                 <Space
                     android:layout_width="wrap_content"
@@ -70,9 +77,13 @@
 
                 <Spinner
                     android:id="@+id/spinnerSemestre"
-                    android:layout_width="185dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1" />
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="Semestre"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
 
                 <Space
                     android:layout_width="wrap_content"
@@ -96,9 +107,13 @@
 
                 <Spinner
                     android:id="@+id/spinnerMateria"
-                    android:layout_width="185dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1" />
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="Carrera"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
 
                 <Space
                     android:layout_width="wrap_content"
@@ -110,14 +125,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/RecyclerAsesores"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:background="@color/common_google_signin_btn_text_dark_disabled"
+                android:textColorHint="@android:color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
 
         </LinearLayout>
     </ScrollView>

@@ -4,32 +4,35 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/NavBuscar"
-            android:title="Asesores" />
-        <item
-            android:id="@+id/Nav_Alumnos"
-            android:title="Alumnos" />
-        <item
-            android:id="@+id/NavPerfil"
-            android:icon="@drawable/iconoperfil"
-            android:title="Perfil" />
-        <item
-            android:id="@+id/NavModPErfil"
-            android:icon="@drawable/iconoperfil"
-            android:title="Modificar Perfil" />
-        <item
-            android:id="@+id/nav_singout"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Singout" />
+        <item android:title="Contactos">
+            <menu>
+                <item
+                    android:id="@+id/NavBuscar"
+                    android:icon="@drawable/busq"
+                    android:title="Busqueda Alumnos" />
+                <item
+                    android:id="@+id/Nav_Alumnos"
+                    android:icon="@drawable/busq"
+                    android:title="Busqueda Asesores" />
+            </menu>
+        </item>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Usuario">
         <menu>
+
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/NavPerfil"
+                android:icon="@drawable/iconoperfil"
+                android:title="Perfil" />
+            <item
+                android:id="@+id/NavModPErfil"
+                android:icon="@drawable/conf"
+                android:title="Modificar Perfil" />
+            <item
+                android:id="@+id/nav_singout"
+                android:icon="@drawable/error"
+                android:title="Cerrar secion" />
         </menu>
     </item>
 
