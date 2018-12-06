@@ -1,15 +1,20 @@
 package com.developers.xsquad.youngadvisors;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -58,7 +63,9 @@ public class PerfilUsuariosFragment extends Fragment {
     LinearLayoutManager llm;
     FragmentTransaction fragmentTransaction;
     ProgressDialog progressDialog;
-
+    ImageView IVCall;
+    ImageView IVCorreo;
+    DataPerfil dataPerfil;
     private OnFragmentInteractionListener mListener;
 
     public PerfilUsuariosFragment() {
@@ -99,6 +106,43 @@ public class PerfilUsuariosFragment extends Fragment {
         Estrellas_Perfil = view.findViewById(R.id.IVPerfilEstrellasUsuarios);
         RComentarios = view.findViewById(R.id.ResultadoComentarios);
         progressDialog = new ProgressDialog(getContext());
+        IVCall = view.findViewById(R.id.IVPerfilLlamarUsuarios);
+        IVCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Uri uri = Uri.parse("tel:" + dataPerfil.getTelefono());
+                    Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+                    startActivity(intent);
+                }catch (Exception e){
+                    Toast.makeText(getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        IVCorreo = view.findViewById(R.id.IVPerfilCorreo);
+        IVCorreo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setData(Uri.parse("mailto:"));
+                emailIntent.setType("text/plain");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, dataPerfil.getCorreo());
+                emailIntent.putExtra(Intent.EXTRA_CC, "YA");
+                emailIntent.putExtra(Intent.EXTRA_BCC, "YA");
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Contacto");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Querid@ "
+                        + dataPerfil.getNombre() + " " + dataPerfil.getApellido()
+                        + "\n"
+                        + "[...]");
+
+                try {
+                    startActivity(Intent.createChooser(emailIntent, "Enviar email..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(v.getContext(),
+                            "No tienes clientes de email instalados.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         progressDialog.setMessage("Cargnado ...");
         progressDialog.show();
@@ -112,7 +156,7 @@ public class PerfilUsuariosFragment extends Fragment {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             try {
                                 if(snapshot.getKey().equals(UI)) {
-                                    DataPerfil dataPerfil = snapshot.getValue(DataPerfil.class);
+                                    dataPerfil = snapshot.getValue(DataPerfil.class);
                                     Nombre.setText(dataPerfil.getNombre() + " " + dataPerfil.getApellido());
                                     Carrera.setText(dataPerfil.getCarrera());
                                     Correo.setText(dataPerfil.getCorreo());

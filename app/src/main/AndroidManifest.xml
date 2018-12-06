@@ -26,5 +26,6 @@
         <activity android:name=".RegistrarActivity" />
         <activity android:name=".RegistrarEPActivity"></activity>
     </application>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
 </manifest>

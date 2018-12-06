@@ -183,10 +183,12 @@ public class ModificarPerfilFragment extends Fragment {
         });
     }
 
-    int NoTipo;
+    String NoTipo;
     public void DefinirNoTipo(){
-        NoTipo = tipos.indexOf(users.getTipo()) + 1;
-        InsertarCambios();
+        NoTipo = Integer.toString(tipos.indexOf(users.getTipo()) + 1);
+        if(NoTipo != null)
+        {InsertarCambios();}
+        else {Toast.makeText(getContext(), "Ups! La conexion esta lenta...", Toast.LENGTH_LONG).show();}
     }
 
     public void InsertarCambios(){

@@ -102,8 +102,9 @@
                     android:background="@color/common_google_signin_btn_text_dark_disabled"
                     android:ems="10"
                     android:hint="Usuario"
-                    android:textColorHint="@color/common_google_signin_btn_text_dark"
                     android:inputType="textEmailAddress"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@color/common_google_signin_btn_text_dark"
                     android:visibility="visible"
                     tools:textColor="@color/common_google_signin_btn_text_dark_default" />
 
@@ -136,8 +137,9 @@
                     android:background="@color/common_google_signin_btn_text_dark_disabled"
                     android:ems="10"
                     android:hint="Contraseña"
-                    android:textColorHint="@color/common_google_signin_btn_text_dark"
                     android:inputType="textPassword"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@color/common_google_signin_btn_text_dark"
                     android:textColorLink="@color/common_google_signin_btn_text_dark_default" />
 
                 <Space
